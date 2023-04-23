@@ -12,7 +12,7 @@ class Character
     set_sprite 'alienBlue_stand.png'
   end
 
-  def draw = sprite.draw_rot(x, y, 3, 0, 0.5, 0.5, x_scale, y_scale)
+  def draw = sprite.draw_rot(x, y, ZOrder::CHARACTER, 0, 0.5, 0.5, x_scale, y_scale)
 
   def set_sprite(filename) = @sprite = Sprite.character(filename)
 
