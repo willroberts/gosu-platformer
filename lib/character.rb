@@ -55,9 +55,7 @@ class Character
         if @y >= 520
           @y = 520
           @is_falling = false
-
-          # We have hit the ground, but we may have further to go. Reuse the walk animation.
-          @is_walking = true
+          reset_sprite
         end
       end
     end
