@@ -3,20 +3,23 @@
 require 'gosu'
 
 BACKGROUND_SCALE = 0.7032 # Scales 1024px to 720px. TODO: Make this dynamic.
+BACKGROUND_SPEED = 2.0
 
 module Background
-  # Loads the sprite into memory.
   def self.initialize
     @sprite = Gosu::Image.new('sprites/background/colored_grass.png', tileable: true)
+    @pos_x = 0
   end
 
-  # Handles positioning of the sprite.
-  def self.update
-    # TODO
+  def self.move_left
+    @pos_x -= BACKGROUND_SPEED
   end
 
-  # Draws the sprite to the screen.
+  def self.move_right
+    @pos_x += BACKGROUND_SPEED
+  end
+
   def self.draw
-    @sprite.draw(0, 0, ZOrder::BACKGROUND, BACKGROUND_SCALE, BACKGROUND_SCALE)
+    @sprite.draw(@pos_x, 0, ZOrder::BACKGROUND, BACKGROUND_SCALE, BACKGROUND_SCALE)
   end
 end

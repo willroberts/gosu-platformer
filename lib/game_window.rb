@@ -18,8 +18,16 @@ class GameWindow < Gosu::Window
   end
 
   def update
-    Background.update
-    Environment.update
+    # Adding input keybinds to test parallax. Can delete this.
+    if Gosu.button_down? Gosu::KB_LEFT
+      Background.move_right
+      Environment.move_right
+    end
+
+    if Gosu.button_down? Gosu::KB_RIGHT
+      Background.move_left
+      Environment.move_left
+    end
   end
 
   def draw

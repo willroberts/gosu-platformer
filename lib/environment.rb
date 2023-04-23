@@ -2,21 +2,24 @@
 
 require 'gosu'
 
-ENVIRONMENT_SCALE = 0.5625 # 1280px to 720px. TODO: Make this dynamic based on screen resolution.
+ENVIRONMENT_SCALE = 0.5625 # 1280px to 720px. TODO: Make this dynamic.
+ENVIRONMENT_SPEED = 4.0
 
 module Environment
-  # Loads the sprite into memory.
   def self.initialize
     @sprite = Gosu::Image.new('sprites/levels/level1.png', tileable: false)
+    @pos_x = 0
   end
 
-  # Handles positioning of the sprite.
-  def self.update
-    # TODO
+  def self.move_left
+    @pos_x -= ENVIRONMENT_SPEED
   end
 
-  # Draws the sprite to the screen.
+  def self.move_right
+    @pos_x += ENVIRONMENT_SPEED
+  end
+
   def self.draw
-    @sprite.draw(0, 0, ZOrder::ENVIRONMENT, ENVIRONMENT_SCALE, ENVIRONMENT_SCALE)
+    @sprite.draw(@pos_x, 0, ZOrder::ENVIRONMENT, ENVIRONMENT_SCALE, ENVIRONMENT_SCALE)
   end
 end
