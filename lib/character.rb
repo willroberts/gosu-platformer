@@ -6,39 +6,30 @@ class Character
   def initialize(x, y)
     @window = GameWindow.instance
 
-    set_sprite 'alienBlue_stand.png'
+    set_sprite('alienBlue_stand.png')
     @walk_anim = Gosu::Image.load_tiles('sprites/character/animations/walk.png', 128, 256)
+    @walk_duration = 1.7583 # TODO: Reduce duplication with the math in Level1.
+    @is_walking = false
 
     @x, @y = x, y
     @x_scale, @y_scale = 1, 1
 
-    @jump_impulse = 10 # Pixels per frame.
-    @jump_gravity = 313.6 # Pixels/Sec^2 (9.81m/s^2 with 1m=32px).
-    @jump_duration = 1.0 # About half advance duration?
+    @jump_impulse = 22.0 # Pixels per frame.
+    @jump_gravity = 31.0 # Pixels per square second.
+    @jump_start_time = nil
     @is_jumping = false
-  end
-
-  def draw is_advancing
-    if is_advancing
-      walk
-    elsif !@is_jumping
-      reset_sprite
-    end
-    sprite.draw_rot(x, y, ZOrder::CHARACTER, 0, 0.5, 0.5, x_scale, y_scale)
+    @is_falling = false
   end
 
   def set_sprite(filename) = @sprite = Sprite.character(filename)
 
+  ### Update Loop ###
+
   def update(action)
-    handle_gravity
     handle_action(action)
   end
 
-  def handle_gravity
-    # return if some_condition? # TODO: Replace with platform/floor awareness.
-    # @y += @jump_impulse # TODO: Replace with gravity acceleration.
-  end
-
+  # Actions occur once per turn/stage.
   def handle_action(action)
     case action
     when :walk then walk
@@ -47,21 +38,68 @@ class Character
     end
   end
 
-  def walk
-    @window.advance_stage
+  # Locomotion is processed every frame.
+  def update_locomotion
+    if @is_walking
+      # Bypassing sprite cache: animation frames are already unique in memory.
+      @sprite = @walk_anim[Gosu.milliseconds / 100 % @walk_anim.size]
+    elsif @is_jumping || @is_falling
+      v = vert_velocity
+      @y -= v
+      if v < 0
+        # We are now falling.
+        @is_jumping = false
+        @is_falling = true
 
-    # Bypassing sprite cache: animation frames are already unique in memory.
-    @sprite = @walk_anim[Gosu.milliseconds / 100 % @walk_anim.size]
+        # Stop falling when we hit the ground.
+        if @y >= 520
+          @y = 520
+          @is_falling = false
+
+          # We have hit the ground, but we may have further to go. Reuse the walk animation.
+          @is_walking = true
+        end
+      end
+    end
+  end
+
+  def walk
+    return if @is_walking
+
+    Thread.new {
+      sleep @walk_duration
+      @is_walking = false
+      reset_sprite
+    }
+
+    @is_walking = true
+    @window.advance_stage
   end
 
   def jump
-    @window.advance_stage
+    return if @is_jumping || @is_falling
 
+    @is_jumping = true
     set_sprite('alienBlue_jump.png')
-    @y -= @jump_impulse
+    @window.advance_stage
+    @jump_start_time = Time.now
+  end
+
+  # Calculate vertical velocity based on jumping and falling durations.
+  # Kinematics: v2 = v1 * at.
+  def vert_velocity
+    dt = Time.now - @jump_start_time
+    downward_velocity = @jump_gravity * dt
+    @jump_impulse - downward_velocity
   end
 
   def reset_sprite
     set_sprite('alienBlue_stand.png')
+  end
+
+  ### Draw Loop ###
+
+  def draw
+    @sprite.draw_rot(x, y, ZOrder::CHARACTER, 0, 0.5, 0.5, x_scale, y_scale)
   end
 end

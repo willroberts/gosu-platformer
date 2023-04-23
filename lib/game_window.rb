@@ -36,6 +36,7 @@ class GameWindow < Gosu::Window
   def update
     handle_input
     @current_level.update
+    character.update_locomotion
   end
 
   def handle_input
@@ -51,7 +52,7 @@ class GameWindow < Gosu::Window
 
   def draw
     @current_level.draw
-    character.draw @current_level.is_advancing # FIXME: Find a better way to access this.
+    character.draw
     UI.draw @current_level.get_stage # FIXME: Find a better way to access this.
   end
 end
