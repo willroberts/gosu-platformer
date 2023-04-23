@@ -3,6 +3,12 @@
 require 'gosu'
 require 'singleton'
 
+require_relative './background.rb'
+require_relative './environment.rb'
+
+module ZOrder
+  BACKGROUND, ENVIRONMENT, PICKUPS, PLAYER, HUD = *0..4
+end
 
 class GameWindow < Gosu::Window
   include Singleton
@@ -16,18 +22,35 @@ class GameWindow < Gosu::Window
   def initialize
     super 1280, 720, fullscreen: false
     self.caption = 'Gosu Platformer'
+
     @game_state = GameState.new
     @root_dir = File.dirname(File.expand_path(__FILE__), 2)
     @collidables = []
+    
+    Background.initialize
+    Environment.initialize
   end
 
   def update
     character.update(:walk_left) if Gosu.button_down?(Gosu::KB_LEFT)
     character.update(:walk_right) if Gosu.button_down?(Gosu::KB_RIGHT)
     character.update(:jump) if Gosu.button_down?(Gosu::KB_SPACE)
+    
+    ### Adding input keybinds to test parallax. Can delete this.
+    if Gosu.button_down? Gosu::KB_LEFT
+      Background.move_right
+      Environment.move_right
+    end
+    if Gosu.button_down? Gosu::KB_RIGHT
+      Background.move_left
+      Environment.move_left
+    end
+    ###
   end
 
   def draw
+    Background.draw
+    Environment.draw
     character.draw
   end
 
