@@ -40,7 +40,7 @@ class GameWindow < Gosu::Window
   def draw
     @current_level.draw
     character.draw
-    UI.draw
+    UI.draw @current_level.get_stage # FIXME: Find a better way to share this data.
   end
 
   def character

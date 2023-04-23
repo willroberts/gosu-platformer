@@ -39,6 +39,11 @@ module Level1
     @advancing = true
   end
 
+  # FIXME: Tried attr_reader but didn't work, might need a class instead of a module?
+  def self.get_stage
+    @stage
+  end
+
   def self.update
     # Move the character to the right by moving the level to the left.
     if @advancing
