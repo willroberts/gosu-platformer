@@ -3,11 +3,12 @@
 require 'gosu'
 require 'singleton'
 
-require_relative './background.rb'
-require_relative './levels/level1.rb'
+require_relative './background'
+require_relative './levels/level1'
+require_relative './ui'
 
 module ZOrder
-  BACKGROUND, LEVEL, PICKUPS, CHARACTER, HUD = *0..4
+  BACKGROUND, LEVEL, PICKUPS, CHARACTER, UI = *0..4
 end
 
 class GameWindow < Gosu::Window
@@ -30,6 +31,7 @@ class GameWindow < Gosu::Window
     
     Background.initialize
     @current_level.initialize
+    UI.initialize
   end
 
   def update
@@ -54,6 +56,7 @@ class GameWindow < Gosu::Window
     Background.draw
     @current_level.draw
     character.draw
+    UI.draw
   end
 
   def character
