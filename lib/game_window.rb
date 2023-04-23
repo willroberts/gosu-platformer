@@ -3,9 +3,6 @@
 require 'gosu'
 require 'singleton'
 
-require_relative './levels/level1'
-require_relative './ui'
-
 module ZOrder
   BACKGROUND, LEVEL, PICKUPS, CHARACTER, UI = *0..4
 end
@@ -51,6 +48,5 @@ class GameWindow < Gosu::Window
     close if Gosu.button_down?(Gosu::KB_ESCAPE)
     @current_level.advance_stage if Gosu.button_down?(Gosu::KB_W)
     character.update(:jump) if Gosu.button_down?(Gosu::KB_SPACE)
-    #character.update(:stop_walk) if !Gosu.button_down?(Gosu::KB_LEFT) && !Gosu.button_down?(Gosu::KB_RIGHT)
   end
 end

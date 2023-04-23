@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'gosu'
-
 module UI
   def self.initialize
     @font = Gosu::Font.new(20)

@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'gosu'
-
 class Sprite
   def self.sprite_dir = File.join(GameWindow.root_dir, 'sprites')
 

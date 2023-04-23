@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'gosu'
-
 module Level1
   def self.initialize
     @sprite = Gosu::Image.new('sprites/levels/level1.png', tileable: true)
@@ -17,14 +15,14 @@ module Level1
     @pos_x = 0
 
     # Each level has 5 stages and 3 elevations (for now).
-    @stage = 1 # Should this be zero-indexed instead?
+    @stage = 1
     @elevations = [520, 304, 88] # Pixels.
 
     # Advancing the stage triggers movement and animations.
     @advancing = false
     @advance_speed = 4.0 # Pixels per frame.
     @advance_distance = 422 # Pixels between each stage (72px * 6 blocks).
-    @advance_duration = (@advance_distance / @advance_speed) / 60 # Kinematics: Velocity=Distance/Time.
+    @advance_duration = (@advance_distance / @advance_speed) / 60 # Kinematics v=d/t. Scaled by framerate.
   end
 
   def self.advance_stage

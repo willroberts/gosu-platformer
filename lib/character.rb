@@ -25,7 +25,7 @@ class Character
     sprite.draw_rot(x, y, ZOrder::CHARACTER, 0, 0.5, 0.5, x_scale, y_scale)
   end
 
-  def set_sprite(filename, **opts) = @sprite = Sprite.character(filename, **opts)
+  def set_sprite(filename) = @sprite = Sprite.character(filename)
 
   def update(action)
     handle_gravity
