@@ -11,19 +11,8 @@ module Level1
     @speed = 4.0
     @pos_x = 0
 
-    # Store platform coordinates for this level.
-    # Original scale: 5120x1280px. Game scale: 2880x720px. (56.25%)
-    # Due to scaling, each block is 72x72px instead of 128x128px.
-    # Multiply array elements by block size to get pixel coordinates.
-    # We can use this to spawn sprites for collision detection.
-    @platforms = [
-      [0, 9, 40, 10], # Floor
-      [7, 6, 24, 7],  # Platform 1
-      [13, 3, 18, 4], # Platform 2
-      [19, 6, 24, 7], # Platform 3
-      [25, 3, 30, 4], # Platform 4
-      [31, 6, 36, 7]  # Platform 5
-    ]
+    # Each level has 5 stages and 3 elevations (for now).
+    @elevations = [520, 304, 88]
   end
 
   def self.move_left
