@@ -18,7 +18,7 @@ module Level1
     @stage = 1
     @elevations = [520, 304, 88] # Pixels.
 
-    # Advancing the stage triggers movement and animations.
+    # Advancing the stage triggers scene movement.
     @advancing = false
     @advance_speed = 4.0 # Pixels per frame.
     @advance_distance = 422 # Pixels between each stage (72px * 6 blocks).

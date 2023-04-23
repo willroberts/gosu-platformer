@@ -47,7 +47,7 @@ class Character
   end
 
   def walk
-    # Bypassing sprite cache: animations frames are already unique in memory.
+    # Bypassing sprite cache: animation frames are already unique in memory.
     @sprite = @walk_anim[Gosu.milliseconds / 100 % @walk_anim.size]
   end
 
