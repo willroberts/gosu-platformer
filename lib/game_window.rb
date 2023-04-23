@@ -17,7 +17,6 @@ class GameWindow < Gosu::Window
 
   def self.root_dir = self.instance.root_dir
   def self.scene = self.instance.scene
-  def self.colliding?(sprite, side:) = self.instance.colliding?(sprite, side: side)
 
   def initialize
     super 1280, 720, fullscreen: false
@@ -26,7 +25,6 @@ class GameWindow < Gosu::Window
     @game_state = GameState.new
     @root_dir = File.dirname(File.expand_path(__FILE__), 2)
     @current_level = Level1
-    @collidables = []
     
     @current_level.initialize
     UI.initialize
@@ -46,12 +44,7 @@ class GameWindow < Gosu::Window
   def character
     # Starting at x:252 means we can consistently advance to the exact center of each stage.
     # The floor is at y:648, but we subtract 128px for the character sprite.
-    @character ||= Character.new(252, 520).tap {|c| @collidables << c }
-  end
-
-  def colliding?(sprite, side:)
-    true if side == :bottom
-    # @collidables.pairs, see if they overlap
+    @character ||= Character.new(252, 520)
   end
 
   def handle_input

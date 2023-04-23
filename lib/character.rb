@@ -9,7 +9,6 @@ class Character
     @x_accel, @y_accel = 0, 0
     @x_scale, @y_scale = 1, 1
     @speed = 0.0 # Visual trick while the level also moves.
-    @solid_footing = true
     set_sprite 'alienBlue_stand.png'
   end
 
@@ -18,27 +17,16 @@ class Character
   def set_sprite(filename) = @sprite = Sprite.character(filename)
 
   def update(action)
-    handle_gravity
+    #handle_gravity
     handle_action(action)
   end
 
   def handle_gravity
     # 9.8 m/s^2 leessgooo
-    return if solid_footing?
-    @y += 10
-  end
-
-  def solid_footing?
-    # Detect collision with the game window.
-    if GameWindow.colliding?(self, side: :bottom)
-      true
-    end
-
-    # Detect collision with platforms in the level.
-    # FIXME: Can't access current_level.
-    #GameWindow.current_level.platforms.each do |p|
-    #  puts p
-    #end
+    #   2 meters == 128px * 0.5 scale; 1 meter = 32px
+    #   9.8 m/s^2 = 313.6px/s^2
+    # return if some_condition?
+    # @y += 10
   end
 
   def handle_action(action)
