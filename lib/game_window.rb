@@ -56,7 +56,7 @@ class GameWindow < Gosu::Window
   end
 
   def character
-    @character ||= Character.new(200, 400).tap {|c| @collidables << c }
+    @character ||= Character.new(256, 524).tap {|c| @collidables << c }
   end
 
   def colliding?(sprite, side:)
