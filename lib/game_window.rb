@@ -7,7 +7,7 @@ require_relative './background.rb'
 require_relative './environment.rb'
 
 module ZOrder
-  BACKGROUND, ENVIRONMENT, PICKUPS, PLAYER, HUD = *0..4
+  BACKGROUND, ENVIRONMENT, PICKUPS, CHARACTER, HUD = *0..4
 end
 
 class GameWindow < Gosu::Window
@@ -32,6 +32,7 @@ class GameWindow < Gosu::Window
   end
 
   def update
+    close if Gosu.button_down?(Gosu::KB_ESCAPE)
     character.update(:walk_left) if Gosu.button_down?(Gosu::KB_LEFT)
     character.update(:walk_right) if Gosu.button_down?(Gosu::KB_RIGHT)
     character.update(:jump) if Gosu.button_down?(Gosu::KB_SPACE)
