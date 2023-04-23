@@ -4,6 +4,7 @@ module Level1
   def self.initialize
     @sprite = Gosu::Image.new('sprites/levels/level1.png', tileable: true)
     @scale = 0.5625 # 1280px to 720px.
+    @pos_x = 0
 
     # Parallax background.
     @bg = Gosu::Image.new('sprites/background/colored_grass.png', tileable: true)
@@ -11,12 +12,9 @@ module Level1
     @bg_positions = (-1..3).map { |x| x * 720 }
     @bg_speed = 2.0
 
-    # The level currently moves instead of the player.
-    @pos_x = 0
-
     # Each level has 5 stages and 3 elevations (for now).
+    # elevation_map tracks whether or not each elevation has a standable platform/surface.
     @stage = 0
-    @elevations = [520, 304, 88] # Pixels.
     @elevation_map = {
       1 => [true, true, false],
       2 => [true, false, true],
@@ -43,6 +41,8 @@ module Level1
     end
 
     @advancing = true
+    next_elevations = @elevation_map[@stage + 1]
+    next_elevations
   end
 
   # FIXME: Tried attr_reader but didn't work, might need a class instead of a module?

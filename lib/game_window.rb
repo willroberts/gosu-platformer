@@ -47,7 +47,8 @@ class GameWindow < Gosu::Window
 
   # Triggered by player input.
   def advance_stage
-    @current_level.advance_stage
+    elevations = @current_level.advance_stage
+    elevations
   end
 
   def draw
