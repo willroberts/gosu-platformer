@@ -5,6 +5,10 @@ This is our team's entry for [Gosu Game Jam #4](https://itch.io/jam/gosu-game-ja
 ## To Do
 
 - Prototype basic platforming
+  - Environment
+  - Character
+  - Input and Movement
+  - Parallax Backgrounds
 - Iterate on more innovative game design ideas
 - Delete unused art assets (from git history as well to reduce repo size)
 
