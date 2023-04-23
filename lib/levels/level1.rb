@@ -15,8 +15,16 @@ module Level1
     @pos_x = 0
 
     # Each level has 5 stages and 3 elevations (for now).
-    @stage = 1
+    @stage = 0
     @elevations = [520, 304, 88] # Pixels.
+    @elevation_map = {
+      1 => [true, true, false],
+      2 => [true, false, true],
+      3 => [true, true, false],
+      4 => [true, false, true],
+      5 => [true, true, false],
+      6 => [true, false, false]
+    }
 
     # Advancing the stage triggers scene movement.
     @advancing = false
