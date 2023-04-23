@@ -3,11 +3,8 @@
 require 'gosu'
 require 'singleton'
 
-require_relative './background.rb'
-require_relative './levels/level1.rb'
-
 module ZOrder
-  BACKGROUND, LEVEL, PICKUPS, CHARACTER, HUD = *0..4
+  BACKGROUND, LEVEL, PICKUPS, CHARACTER, UI = *0..4
 end
 
 class GameWindow < Gosu::Window
@@ -17,7 +14,6 @@ class GameWindow < Gosu::Window
 
   def self.root_dir = self.instance.root_dir
   def self.scene = self.instance.scene
-  def self.colliding?(sprite, side:) = self.instance.colliding?(sprite, side: side)
 
   def initialize
     super 1280, 720, fullscreen: false
@@ -26,43 +22,31 @@ class GameWindow < Gosu::Window
     @game_state = GameState.new
     @root_dir = File.dirname(File.expand_path(__FILE__), 2)
     @current_level = Level1
-    @collidables = []
     
-    Background.initialize
     @current_level.initialize
+    UI.initialize
   end
 
   def update
-    close if Gosu.button_down?(Gosu::KB_ESCAPE)
-    character.update(:walk_left) if Gosu.button_down?(Gosu::KB_LEFT)
-    character.update(:walk_right) if Gosu.button_down?(Gosu::KB_RIGHT)
-    character.update(:jump) if Gosu.button_down?(Gosu::KB_SPACE)
-    
-    ### Adding input keybinds to test parallax. Can delete this.
-    if Gosu.button_down? Gosu::KB_LEFT
-      Background.move_right
-      @current_level.move_right
-    end
-    if Gosu.button_down? Gosu::KB_RIGHT
-      Background.move_left
-      @current_level.move_left
-    end
-    ###
+    handle_input
+    @current_level.update
   end
 
   def draw
-    Background.draw
     @current_level.draw
-    character.draw
+    character.draw @current_level.is_advancing # FIXME: Find a better way to access this.
+    UI.draw @current_level.get_stage # FIXME: Find a better way to access this.
   end
 
   def character
+    # Starting at x:252 means we can consistently advance to the exact center of each stage.
     # The floor is at y:648, but we subtract 128px for the character sprite.
-    @character ||= Character.new(256, 520).tap {|c| @collidables << c }
+    @character ||= Character.new(252, 520)
   end
 
-  def colliding?(sprite, side:)
-    true if side == :bottom
-    # @collidables.pairs, see if they overlap
+  def handle_input
+    close if Gosu.button_down?(Gosu::KB_ESCAPE)
+    @current_level.advance_stage if Gosu.button_down?(Gosu::KB_W)
+    character.update(:jump) if Gosu.button_down?(Gosu::KB_SPACE)
   end
 end

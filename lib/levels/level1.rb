@@ -1,40 +1,62 @@
 # frozen_string_literal: true
 
-require 'gosu'
-
 module Level1
   def self.initialize
-    @sprite = Gosu::Image.new('sprites/levels/level1.png', tileable: false)
-    @scale = 0.5625 # 1280px to 720px. TODO: Make this dynamic.
+    @sprite = Gosu::Image.new('sprites/levels/level1.png', tileable: true)
+    @scale = 0.5625 # 1280px to 720px.
+
+    # Parallax background.
+    @bg = Gosu::Image.new('sprites/background/colored_grass.png', tileable: true)
+    @bg_scale = 0.7032 # 1024px to 720px.
+    @bg_positions = (-1..3).map {|x| x * 720}
+    @bg_speed = 2.0
 
     # The level currently moves instead of the player.
-    @speed = 4.0
     @pos_x = 0
 
-    # Store platform coordinates for this level.
-    # Original scale: 5120x1280px. Game scale: 2880x720px. (56.25%)
-    # Due to scaling, each block is 72x72px instead of 128x128px.
-    # Multiply array elements by block size to get pixel coordinates.
-    # We can use this to spawn sprites for collision detection.
-    @platforms = [
-      [0, 9, 40, 10], # Floor
-      [7, 6, 24, 7],  # Platform 1
-      [13, 3, 18, 4], # Platform 2
-      [19, 6, 24, 7], # Platform 3
-      [25, 3, 30, 4], # Platform 4
-      [31, 6, 36, 7]  # Platform 5
-    ]
+    # Each level has 5 stages and 3 elevations (for now).
+    @stage = 1
+    @elevations = [520, 304, 88] # Pixels.
+
+    # Advancing the stage triggers scene movement.
+    @advancing = false
+    @advance_speed = 4.0 # Pixels per frame.
+    @advance_distance = 422 # Pixels between each stage (72px * 6 blocks).
+    @advance_duration = (@advance_distance / @advance_speed) / 60 # Kinematics v=d/t. Scaled by framerate.
   end
 
-  def self.move_left
-    @pos_x -= @speed
+  def self.advance_stage
+    return if @advancing
+
+    Thread.new {
+      sleep @advance_duration
+      @advancing = false
+      @stage += 1
+    }
+
+    @advancing = true
   end
 
-  def self.move_right
-    @pos_x += @speed
+  # FIXME: Tried attr_reader but didn't work, might need a class instead of a module?
+  def self.get_stage
+    @stage
+  end
+  def self.is_advancing
+    @advancing
+  end
+
+  def self.update
+    # Move the character to the right by moving the level to the left.
+    if @advancing
+      @pos_x -= @advance_speed
+      @bg_positions.map! {|x| x -= @bg_speed}
+    end
   end
 
   def self.draw
+    @bg_positions.each do |x|
+      @bg.draw(x, 0, ZOrder::BACKGROUND, @bg_scale, @bg_scale)
+    end
     @sprite.draw(@pos_x, 0, ZOrder::LEVEL, @scale, @scale)
   end
 end
