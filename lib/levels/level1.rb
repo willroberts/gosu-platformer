@@ -23,7 +23,7 @@ module Level1
     # Advancing the stage triggers movement and animations.
     @advancing = false
     @advance_speed = 4.0 # Pixels per frame.
-    @advance_distance = 432 # Pixels between each stage (72px * 6 blocks).
+    @advance_distance = 422 # Pixels between each stage (72px * 6 blocks).
     @advance_duration = (@advance_distance / @advance_speed) / 60 # Kinematics: Velocity=Distance/Time.
   end
 
