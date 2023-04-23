@@ -29,7 +29,16 @@ class Character
   end
 
   def solid_footing?
-    GameWindow.colliding?(self, side: :bottom)
+    # Detect collision with the game window.
+    if GameWindow.colliding?(self, side: :bottom)
+      true
+    end
+
+    # Detect collision with platforms in the level.
+    # FIXME: Can't access current_level.
+    #GameWindow.current_level.platforms.each do |p|
+    #  puts p
+    #end
   end
 
   def handle_action(action)

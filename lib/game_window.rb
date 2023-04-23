@@ -13,7 +13,7 @@ end
 class GameWindow < Gosu::Window
   include Singleton
 
-  attr_reader :game_state, :root_dir, :character
+  attr_reader :game_state, :root_dir, :character, :current_level
 
   def self.root_dir = self.instance.root_dir
   def self.scene = self.instance.scene
@@ -25,10 +25,11 @@ class GameWindow < Gosu::Window
 
     @game_state = GameState.new
     @root_dir = File.dirname(File.expand_path(__FILE__), 2)
+    @current_level = Level1
     @collidables = []
     
     Background.initialize
-    Level1.initialize
+    @current_level.initialize
   end
 
   def update
@@ -40,18 +41,18 @@ class GameWindow < Gosu::Window
     ### Adding input keybinds to test parallax. Can delete this.
     if Gosu.button_down? Gosu::KB_LEFT
       Background.move_right
-      Level1.move_right
+      @current_level.move_right
     end
     if Gosu.button_down? Gosu::KB_RIGHT
       Background.move_left
-      Level1.move_left
+      @current_level.move_left
     end
     ###
   end
 
   def draw
     Background.draw
-    Level1.draw
+    @current_level.draw
     character.draw
   end
 
