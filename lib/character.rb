@@ -8,7 +8,7 @@ class Character
     @x, @y = x, y
     @x_accel, @y_accel = 0, 0
     @x_scale, @y_scale = 1, 1
-    @speed = 0.0 # Visual trick while the environment also moves.
+    @speed = 0.0 # Visual trick while the level also moves.
     @solid_footing = true
     set_sprite 'alienBlue_stand.png'
   end

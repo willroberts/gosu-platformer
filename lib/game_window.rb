@@ -4,10 +4,10 @@ require 'gosu'
 require 'singleton'
 
 require_relative './background.rb'
-require_relative './environment.rb'
+require_relative './levels/level1.rb'
 
 module ZOrder
-  BACKGROUND, ENVIRONMENT, PICKUPS, CHARACTER, HUD = *0..4
+  BACKGROUND, LEVEL, PICKUPS, CHARACTER, HUD = *0..4
 end
 
 class GameWindow < Gosu::Window
@@ -28,7 +28,7 @@ class GameWindow < Gosu::Window
     @collidables = []
     
     Background.initialize
-    Environment.initialize
+    Level1.initialize
   end
 
   def update
@@ -40,18 +40,18 @@ class GameWindow < Gosu::Window
     ### Adding input keybinds to test parallax. Can delete this.
     if Gosu.button_down? Gosu::KB_LEFT
       Background.move_right
-      Environment.move_right
+      Level1.move_right
     end
     if Gosu.button_down? Gosu::KB_RIGHT
       Background.move_left
-      Environment.move_left
+      Level1.move_left
     end
     ###
   end
 
   def draw
     Background.draw
-    Environment.draw
+    Level1.draw
     character.draw
   end
 

@@ -2,7 +2,7 @@
 
 require 'gosu'
 
-module Environment
+module Level1
   def self.initialize
     @sprite = Gosu::Image.new('sprites/levels/level1.png', tileable: false)
     @scale = 0.5625 # 1280px to 720px. TODO: Make this dynamic.
@@ -19,6 +19,6 @@ module Environment
   end
 
   def self.draw
-    @sprite.draw(@pos_x, 0, ZOrder::ENVIRONMENT, @scale, @scale)
+    @sprite.draw(@pos_x, 0, ZOrder::LEVEL, @scale, @scale)
   end
 end
