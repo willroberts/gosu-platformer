@@ -25,7 +25,7 @@ class Character
     sprite.draw_rot(x, y, ZOrder::CHARACTER, 0, 0.5, 0.5, x_scale, y_scale)
   end
 
-  def set_sprite(filename) = @sprite = Sprite.character(filename)
+  def set_sprite(filename, **opts) = @sprite = Sprite.character(filename, **opts)
 
   def update(action)
     handle_gravity
@@ -47,7 +47,9 @@ class Character
   end
 
   def walk
-    set_sprite(@walk_anim[Gosu.milliseconds / 100 % @walk_anim.size])
+    frame = @walk_anim[Gosu.milliseconds / 100 % @walk_anim.size]
+    id = frame.to_s
+    set_sprite(frame, id: id)
   end
 
   def stop_walk

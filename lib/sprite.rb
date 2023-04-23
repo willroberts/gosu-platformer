@@ -8,10 +8,9 @@ class Sprite
   def self.character(input, **opts)
     # Apologies, I'm trying to hack in support for animations (1 file; 2 sprites).
     # In the animation case, input.kind_of? is Gosu::Image.
-    if input.kind_of? String
-      filename = input
-      self[File.join('character', filename), **opts]
-    end
+    return unless input.kind_of? String
+    filename = input
+    self[File.join('character', filename), **opts]
   end
 
   private

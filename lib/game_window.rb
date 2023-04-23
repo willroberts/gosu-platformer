@@ -51,8 +51,6 @@ class GameWindow < Gosu::Window
     close if Gosu.button_down?(Gosu::KB_ESCAPE)
     @current_level.advance_stage if Gosu.button_down?(Gosu::KB_W)
     character.update(:jump) if Gosu.button_down?(Gosu::KB_SPACE)
-    character.update(:walk_left) if Gosu.button_down?(Gosu::KB_LEFT)
-    character.update(:walk_right) if Gosu.button_down?(Gosu::KB_RIGHT)
-    character.update(:stop_walk) if !Gosu.button_down?(Gosu::KB_LEFT) && !Gosu.button_down?(Gosu::KB_RIGHT)
+    #character.update(:stop_walk) if !Gosu.button_down?(Gosu::KB_LEFT) && !Gosu.button_down?(Gosu::KB_RIGHT)
   end
 end
