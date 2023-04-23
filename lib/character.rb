@@ -46,6 +46,7 @@ class Character
     when :jump then jump
     when :walk_left then walk(:left)
     when :walk_right then walk(:right)
+    when :stop_walk then stop_walk
     else raise "unknown action! (#{action})"
     end
   end
@@ -59,6 +60,10 @@ class Character
     set_sprite('alienBlue_walk1.png')
     set_direction(direction)
     @x += direction == :right ? @speed : -@speed
+  end
+
+  def stop_walk
+    set_sprite('alienBlue_stand.png')
   end
 
   def set_direction(direction)

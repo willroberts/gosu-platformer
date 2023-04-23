@@ -35,21 +35,7 @@ class GameWindow < Gosu::Window
   end
 
   def update
-    close if Gosu.button_down?(Gosu::KB_ESCAPE)
-    character.update(:walk_left) if Gosu.button_down?(Gosu::KB_LEFT)
-    character.update(:walk_right) if Gosu.button_down?(Gosu::KB_RIGHT)
-    character.update(:jump) if Gosu.button_down?(Gosu::KB_SPACE)
-    
-    ### Adding input keybinds to test parallax. Can delete this.
-    if Gosu.button_down? Gosu::KB_LEFT
-      Background.move_right
-      @current_level.move_right
-    end
-    if Gosu.button_down? Gosu::KB_RIGHT
-      Background.move_left
-      @current_level.move_left
-    end
-    ###
+    handle_input
   end
 
   def draw
@@ -67,5 +53,29 @@ class GameWindow < Gosu::Window
   def colliding?(sprite, side:)
     true if side == :bottom
     # @collidables.pairs, see if they overlap
+  end
+
+  def handle_input
+    close if Gosu.button_down?(Gosu::KB_ESCAPE)
+
+    if Gosu.button_down?(Gosu::KB_LEFT)
+      Background.move_right
+      @current_level.move_right
+      character.update(:walk_left)
+    end
+
+    if Gosu.button_down?(Gosu::KB_RIGHT)
+      Background.move_left
+      @current_level.move_left
+      character.update(:walk_right)
+    end
+
+    if !Gosu.button_down?(Gosu::KB_LEFT) && !Gosu.button_down?(Gosu::KB_RIGHT)
+      character.update(:stop_walk)
+    end
+
+    if Gosu.button_down?(Gosu::KB_SPACE)
+      character.update(:jump)
+    end
   end
 end
