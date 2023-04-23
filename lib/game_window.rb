@@ -37,8 +37,8 @@ class GameWindow < Gosu::Window
 
   def draw
     @current_level.draw
-    character.draw
-    UI.draw @current_level.get_stage # FIXME: Find a better way to share this data.
+    character.draw @current_level.is_advancing # FIXME: Find a better way to access this.
+    UI.draw @current_level.get_stage # FIXME: Find a better way to access this.
   end
 
   def character
