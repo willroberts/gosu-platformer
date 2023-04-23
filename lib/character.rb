@@ -10,9 +10,10 @@ class Character
     @walk_anim = Gosu::Image.load_tiles('sprites/character/animations/walk.png', 128, 256)
 
     @x, @y = x, y
-    @x_accel, @y_accel = 0, 0
     @x_scale, @y_scale = 1, 1
-    @speed = 0.0 # Visual trick while the level also moves.
+
+    @jump_impulse = 10 # Pixels per frame.
+    @jump_gravity = 313.6 # Pixels/Sec^2 (9.81m/s^2 with 1m=32px).
   end
 
   def draw is_advancing
@@ -32,11 +33,8 @@ class Character
   end
 
   def handle_gravity
-    # 9.8 m/s^2 leessgooo
-    #   2 meters == 128px * 0.5 scale; 1 meter = 32px
-    #   9.8 m/s^2 = 313.6px/s^2
-    # return if some_condition?
-    # @y += 10
+    # return if some_condition? # TODO: Replace with platform/floor awareness.
+    # @y += @jump_impulse # TODO: Replace with gravity acceleration.
   end
 
   def handle_action(action)
@@ -58,6 +56,6 @@ class Character
 
   def jump
     set_sprite('alienBlue_jump.png')
-    @y -= 10
+    @y -= @jump_impulse
   end
 end
