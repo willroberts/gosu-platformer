@@ -4,16 +4,16 @@ require 'gosu'
 require 'singleton'
 
 require_relative './background.rb'
-require_relative './environment.rb'
+require_relative './levels/level1.rb'
 
 module ZOrder
-  BACKGROUND, ENVIRONMENT, PICKUPS, PLAYER, HUD = *0..4
+  BACKGROUND, LEVEL, PICKUPS, CHARACTER, HUD = *0..4
 end
 
 class GameWindow < Gosu::Window
   include Singleton
 
-  attr_reader :game_state, :root_dir, :character
+  attr_reader :game_state, :root_dir, :character, :current_level
 
   def self.root_dir = self.instance.root_dir
   def self.scene = self.instance.scene
@@ -25,13 +25,15 @@ class GameWindow < Gosu::Window
 
     @game_state = GameState.new
     @root_dir = File.dirname(File.expand_path(__FILE__), 2)
+    @current_level = Level1
     @collidables = []
     
     Background.initialize
-    Environment.initialize
+    @current_level.initialize
   end
 
   def update
+    close if Gosu.button_down?(Gosu::KB_ESCAPE)
     character.update(:walk_left) if Gosu.button_down?(Gosu::KB_LEFT)
     character.update(:walk_right) if Gosu.button_down?(Gosu::KB_RIGHT)
     character.update(:jump) if Gosu.button_down?(Gosu::KB_SPACE)
@@ -39,23 +41,24 @@ class GameWindow < Gosu::Window
     ### Adding input keybinds to test parallax. Can delete this.
     if Gosu.button_down? Gosu::KB_LEFT
       Background.move_right
-      Environment.move_right
+      @current_level.move_right
     end
     if Gosu.button_down? Gosu::KB_RIGHT
       Background.move_left
-      Environment.move_left
+      @current_level.move_left
     end
     ###
   end
 
   def draw
     Background.draw
-    Environment.draw
+    @current_level.draw
     character.draw
   end
 
   def character
-    @character ||= Character.new(200, 400).tap {|c| @collidables << c }
+    # The floor is at y:576, but we subtract 52px for the character sprite.
+    @character ||= Character.new(256, 524).tap {|c| @collidables << c }
   end
 
   def colliding?(sprite, side:)

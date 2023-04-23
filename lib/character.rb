@@ -8,11 +8,12 @@ class Character
     @x, @y = x, y
     @x_accel, @y_accel = 0, 0
     @x_scale, @y_scale = 1, 1
+    @speed = 0.0 # Visual trick while the level also moves.
     @solid_footing = true
     set_sprite 'alienBlue_stand.png'
   end
 
-  def draw = sprite.draw_rot(x, y, 3, 0, 0.5, 0.5, x_scale, y_scale)
+  def draw = sprite.draw_rot(x, y, ZOrder::CHARACTER, 0, 0.5, 0.5, x_scale, y_scale)
 
   def set_sprite(filename) = @sprite = Sprite.character(filename)
 
@@ -28,7 +29,16 @@ class Character
   end
 
   def solid_footing?
-    GameWindow.colliding?(self, side: :bottom)
+    # Detect collision with the game window.
+    if GameWindow.colliding?(self, side: :bottom)
+      true
+    end
+
+    # Detect collision with platforms in the level.
+    # FIXME: Can't access current_level.
+    #GameWindow.current_level.platforms.each do |p|
+    #  puts p
+    #end
   end
 
   def handle_action(action)
@@ -48,7 +58,7 @@ class Character
   def walk(direction)
     set_sprite('alienBlue_walk1.png')
     set_direction(direction)
-    @x += direction == :right ? 10 : -10
+    @x += direction == :right ? @speed : -@speed
   end
 
   def set_direction(direction)
