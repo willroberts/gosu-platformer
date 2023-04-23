@@ -17,7 +17,7 @@ class Character
 
   def draw is_advancing
     if is_advancing
-      walk(:right)
+      walk
     else
       stop_walk
     end
@@ -27,7 +27,7 @@ class Character
   def set_sprite(filename) = @sprite = Sprite.character(filename)
 
   def update(action)
-    #handle_gravity
+    handle_gravity
     handle_action(action)
   end
 
@@ -41,36 +41,23 @@ class Character
 
   def handle_action(action)
     case action
-    when :jump then jump
-    when :walk_left then walk(:left)
-    when :walk_right then walk(:right)
+    when :walk then walk
     when :stop_walk then stop_walk
+    when :jump then jump
     else raise "unknown action! (#{action})"
     end
   end
 
-  def jump
-    set_sprite('alienBlue_jump.png')
-    @y -= 10
-  end
-
-  def walk(direction)
-    sprite = @walk_anim[Gosu.milliseconds / 100 % @walk_anim.size]
-    set_sprite(sprite)
-    #set_sprite('alienBlue_walk1.png')
-    #set_direction(direction)
-    #@x += direction == :right ? @speed : -@speed
+  def walk
+    set_sprite(@walk_anim[Gosu.milliseconds / 100 % @walk_anim.size])
   end
 
   def stop_walk
     set_sprite('alienBlue_stand.png')
   end
 
-  def set_direction(direction)
-    case direction
-    when :left then @x_scale = -1
-    when :right then @x_scale = 1
-    else raise "unknown direction! (#{direction})"
-    end
+  def jump
+    set_sprite('alienBlue_jump.png')
+    @y -= 10
   end
 end
