@@ -41,9 +41,6 @@ module Level1
   def self.get_stage
     @stage
   end
-  def self.is_advancing
-    @advancing
-  end
 
   def self.update
     # Move the character to the right by moving the level to the left.

@@ -27,26 +27,32 @@ class GameWindow < Gosu::Window
     UI.initialize
   end
 
-  def update
-    handle_input
-    @current_level.update
-  end
-
-  def draw
-    @current_level.draw
-    character.draw @current_level.is_advancing # FIXME: Find a better way to access this.
-    UI.draw @current_level.get_stage # FIXME: Find a better way to access this.
-  end
-
   def character
     # Starting at x:252 means we can consistently advance to the exact center of each stage.
     # The floor is at y:648, but we subtract 128px for the character sprite.
     @character ||= Character.new(252, 520)
   end
 
+  def update
+    handle_input
+    @current_level.update
+    character.update_locomotion
+  end
+
   def handle_input
     close if Gosu.button_down?(Gosu::KB_ESCAPE)
-    @current_level.advance_stage if Gosu.button_down?(Gosu::KB_W)
-    character.update(:jump) if Gosu.button_down?(Gosu::KB_SPACE)
+    character.perform(:walk) if Gosu.button_down?(Gosu::KB_W)
+    character.perform(:jump) if Gosu.button_down?(Gosu::KB_SPACE)
+  end
+
+  # Triggered by player input.
+  def advance_stage
+    @current_level.advance_stage
+  end
+
+  def draw
+    @current_level.draw
+    character.draw
+    UI.draw @current_level.get_stage # FIXME: Find a better way to access this.
   end
 end
