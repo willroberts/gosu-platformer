@@ -11,9 +11,9 @@ module Level1
     @speed = 4.0
     @pos_x = 0
 
-    # Store collision coordinates for this level.
+    # Store platform coordinates for this level, for collision detection.
     # Original scale: 5120x1280px. Game scale: 2560x640px.
-    @collisions = [
+    @platforms = [
       [0, 576, 2560, 640],    # Floor
       [448, 384, 1536, 448],  # Platform 1
       [832, 192, 1152, 256],  # Platform 2
