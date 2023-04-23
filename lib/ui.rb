@@ -10,9 +10,9 @@ module UI
   end
 
   def self.draw stage
-    @font.draw_text('Current level: 1', 10, 10, ZOrder::UI, 1.0, 1.0, Gosu::Color::BLACK)
-    @font.draw_text("Current stage: #{stage}", 10, 40, ZOrder::UI, 1.0, 1.0, Gosu::Color::BLACK)
-    @font.draw_text('Press W to advance to the next stage', 10, 70, ZOrder::UI, 1.0, 1.0, Gosu::Color::BLACK)
+    @font.draw_text("Current stage: #{stage}", 10, 10, ZOrder::UI, 1.0, 1.0, Gosu::Color::BLACK)
+    @font.draw_text('Press W to move forward', 10, 40, ZOrder::UI, 1.0, 1.0, Gosu::Color::BLACK)
+    @font.draw_text('Press SPACE to jump', 10, 70, ZOrder::UI, 1.0, 1.0, Gosu::Color::BLACK)
     @font.draw_text('Press ESC to quit', 10, 100, ZOrder::UI, 1.0, 1.0, Gosu::Color::BLACK)
 
     if @enable_debug_grid
