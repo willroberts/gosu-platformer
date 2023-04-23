@@ -14,13 +14,15 @@ class Character
 
     @jump_impulse = 10 # Pixels per frame.
     @jump_gravity = 313.6 # Pixels/Sec^2 (9.81m/s^2 with 1m=32px).
+    @jump_duration = 1.0 # About half advance duration?
+    @is_jumping = false
   end
 
   def draw is_advancing
     if is_advancing
       walk
-    else
-      stop_walk
+    elsif !@is_jumping
+      reset_sprite
     end
     sprite.draw_rot(x, y, ZOrder::CHARACTER, 0, 0.5, 0.5, x_scale, y_scale)
   end
@@ -40,23 +42,26 @@ class Character
   def handle_action(action)
     case action
     when :walk then walk
-    when :stop_walk then stop_walk
     when :jump then jump
     else raise "unknown action! (#{action})"
     end
   end
 
   def walk
+    @window.advance_stage
+
     # Bypassing sprite cache: animation frames are already unique in memory.
     @sprite = @walk_anim[Gosu.milliseconds / 100 % @walk_anim.size]
   end
 
-  def stop_walk
-    set_sprite('alienBlue_stand.png')
-  end
-
   def jump
+    @window.advance_stage
+
     set_sprite('alienBlue_jump.png')
     @y -= @jump_impulse
+  end
+
+  def reset_sprite
+    set_sprite('alienBlue_stand.png')
   end
 end
