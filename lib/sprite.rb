@@ -5,11 +5,7 @@ require 'gosu'
 class Sprite
   def self.sprite_dir = File.join(GameWindow.root_dir, 'sprites')
 
-  def self.character(input, **opts)
-    # Apologies, I'm trying to hack in support for animations (1 file; 2 sprites).
-    # In the animation case, input.kind_of? is Gosu::Image.
-    return unless input.kind_of? String
-    filename = input
+  def self.character(filename, **opts)
     self[File.join('character', filename), **opts]
   end
 

@@ -47,9 +47,8 @@ class Character
   end
 
   def walk
-    frame = @walk_anim[Gosu.milliseconds / 100 % @walk_anim.size]
-    id = frame.to_s
-    set_sprite(frame, id: id)
+    # Bypassing sprite cache: animations frames are already unique in memory.
+    @sprite = @walk_anim[Gosu.milliseconds / 100 % @walk_anim.size]
   end
 
   def stop_walk
