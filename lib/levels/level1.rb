@@ -11,15 +11,18 @@ module Level1
     @speed = 4.0
     @pos_x = 0
 
-    # Store platform coordinates for this level, for collision detection.
-    # Original scale: 5120x1280px. Game scale: 2560x640px.
+    # Store platform coordinates for this level.
+    # Original scale: 5120x1280px. Game scale: 2880x720px. (56.25%)
+    # Due to scaling, each block is 72x72px instead of 128x128px.
+    # Multiply array elements by block size to get pixel coordinates.
+    # We can use this to spawn sprites for collision detection.
     @platforms = [
-      [0, 576, 2560, 640],    # Floor
-      [448, 384, 1536, 448],  # Platform 1
-      [832, 192, 1152, 256],  # Platform 2
-      [1216, 384, 1536, 448], # Platform 3
-      [1600, 192, 1920, 256], # Platform 4
-      [1984, 384, 2304, 448]  # Platform 5
+      [0, 9, 40, 10], # Floor
+      [7, 6, 24, 7],  # Platform 1
+      [13, 3, 18, 4], # Platform 2
+      [19, 6, 24, 7], # Platform 3
+      [25, 3, 30, 4], # Platform 4
+      [31, 6, 36, 7]  # Platform 5
     ]
   end
 

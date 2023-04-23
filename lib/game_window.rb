@@ -57,8 +57,8 @@ class GameWindow < Gosu::Window
   end
 
   def character
-    # The floor is at y:576, but we subtract 52px for the character sprite.
-    @character ||= Character.new(256, 524).tap {|c| @collidables << c }
+    # The floor is at y:648, but we subtract 128px for the character sprite.
+    @character ||= Character.new(256, 520).tap {|c| @collidables << c }
   end
 
   def colliding?(sprite, side:)
