@@ -41,8 +41,8 @@ class GameWindow < Gosu::Window
 
   def handle_input
     close if Gosu.button_down?(Gosu::KB_ESCAPE)
-    character.update(:walk) if Gosu.button_down?(Gosu::KB_W)
-    character.update(:jump) if Gosu.button_down?(Gosu::KB_SPACE)
+    character.perform(:walk) if Gosu.button_down?(Gosu::KB_W)
+    character.perform(:jump) if Gosu.button_down?(Gosu::KB_SPACE)
   end
 
   # Triggered by player input.

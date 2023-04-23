@@ -25,7 +25,7 @@ class Character
 
   ### Update Loop ###
 
-  def update(action)
+  def perform(action)
     handle_action(action)
   end
 
