@@ -98,7 +98,6 @@ class Character
       end
     end
     puts "[walk] Elevation after: #{@current_elevation}"
-
   end
 
   def jump
