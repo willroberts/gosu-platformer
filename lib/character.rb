@@ -87,17 +87,22 @@ class Character
     # Handle falling off current elevation when walking.
     puts "[walk] Elevation before: #{@current_elevation}"
     if @current_elevation == 1 && !next_elevations[1]
-      @current_elevation -= 1
-      @is_falling = true
+      delay_fall
     elsif @current_elevation == 2 && !next_elevations[2]
-      @current_elevation -= 1
-      @is_falling = true
+      delay_fall
       unless next_elevations[1]
-        @current_elevation -= 1
-        @is_falling = true
+        delay_fall
       end
     end
     puts "[walk] Elevation after: #{@current_elevation}"
+  end
+
+  def delay_fall
+    Thread.new do
+      sleep(Level1.advance_duration / 2)
+      @current_elevation -= 1
+      @is_falling = true
+    end
   end
 
   def jump

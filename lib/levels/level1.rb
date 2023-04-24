@@ -31,6 +31,8 @@ module Level1
     @advance_duration = (@advance_distance / @advance_speed) / 60 # Kinematics v=d/t. Scaled by framerate.
   end
 
+  def self.advance_duration = @advance_duration
+
   def self.advance_stage
     return if @advancing
 
