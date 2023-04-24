@@ -99,7 +99,7 @@ class Character
 
   def delay_fall
     Thread.new do
-      sleep(Level1.advance_duration / 2)
+      sleep(Level1.advance_duration / 2 + 0.1)
       @current_elevation -= 1
       @is_falling = true
     end
