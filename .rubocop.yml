@@ -1,5 +1,15 @@
 Metrics/MethodLength:
   Enabled: false
+  Why: '10 lines is a silly limitation'
+
+Naming/MethodParameterName:
+  Enabled: false
+  Why: 'I wanna name variables x and y'
 
 Style/Documentation:
   Enabled: false
+  Why: 'Not documenting this lol'
+
+Style/GuardClause:
+  Enabled: false
+  Why: 'Changing if { ... } to return unless is kinda annoying'

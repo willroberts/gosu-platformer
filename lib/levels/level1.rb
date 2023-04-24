@@ -8,7 +8,7 @@ module Level1
     # Parallax background.
     @bg = Gosu::Image.new('sprites/background/colored_grass.png', tileable: true)
     @bg_scale = 0.7032 # 1024px to 720px.
-    @bg_positions = (-1..3).map {|x| x * 720}
+    @bg_positions = (-1..3).map { |x| x * 720 }
     @bg_speed = 2.0
 
     # The level currently moves instead of the player.
@@ -28,11 +28,11 @@ module Level1
   def self.advance_stage
     return if @advancing
 
-    Thread.new {
+    Thread.new do
       sleep @advance_duration
       @advancing = false
       @stage += 1
-    }
+    end
 
     @advancing = true
   end
@@ -44,10 +44,10 @@ module Level1
 
   def self.update
     # Move the character to the right by moving the level to the left.
-    if @advancing
-      @pos_x -= @advance_speed
-      @bg_positions.map! {|x| x -= @bg_speed}
-    end
+    return unless @advancing
+
+    @pos_x -= @advance_speed
+    @bg_positions.map! { |x| x - @bg_speed }
   end
 
   def self.draw

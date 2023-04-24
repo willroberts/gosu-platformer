@@ -10,10 +10,10 @@ end
 class GameWindow < Gosu::Window
   include Singleton
 
-  attr_reader :game_state, :root_dir, :character, :current_level
+  attr_reader :game_state, :root_dir, :current_level
 
-  def self.root_dir = self.instance.root_dir
-  def self.scene = self.instance.scene
+  def self.root_dir = instance.root_dir
+  def self.scene = instance.scene
 
   def initialize
     super 1280, 720, fullscreen: false
@@ -22,7 +22,7 @@ class GameWindow < Gosu::Window
     @game_state = GameState.new
     @root_dir = File.dirname(File.expand_path(__FILE__), 2)
     @current_level = Level1
-    
+
     @current_level.initialize
     UI.initialize
   end
