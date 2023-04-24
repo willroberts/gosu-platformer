@@ -61,7 +61,15 @@ class Character
         if @y >= @floor_heights[@current_elevation]
           @y = @floor_heights[@current_elevation]
           @is_falling = false
-          reset_sprite
+          @is_walking = true
+          Thread.new do
+            # This value is needs to be longer if traversing from higher to
+            # lower elevation ~ 0.6s
+            jitter = 0.4
+            sleep(Level1.advance_duration / 2 - jitter)
+            @is_walking = false
+            reset_sprite
+          end
         end
       end
     end
