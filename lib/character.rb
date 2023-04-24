@@ -15,6 +15,8 @@ class Character
     @y = y
     @x_scale = 1
     @y_scale = 1
+    @floor_heights = [520, 304, 88] # 1F, 2F, 3F. Pixels.
+    @current_elevation = 0 # 1F.
 
     @jump_impulse = 22.0 # Pixels per frame.
     @jump_gravity = 31.0 # Pixels per square second.
@@ -45,7 +47,9 @@ class Character
     if @is_walking
       # Bypassing sprite cache: animation frames are already unique in memory.
       @sprite = @walk_anim[Gosu.milliseconds / 100 % @walk_anim.size]
-    elsif @is_jumping || @is_falling
+    end
+
+    if @is_jumping || @is_falling
       v = vert_velocity
       @y -= v
       if v.negative?
@@ -54,8 +58,8 @@ class Character
         @is_falling = true
 
         # Stop falling when we hit the ground.
-        if @y >= 520
-          @y = 520
+        if @y >= @floor_heights[@current_elevation]
+          @y = @floor_heights[@current_elevation]
           @is_falling = false
           reset_sprite
         end
@@ -64,7 +68,7 @@ class Character
   end
 
   def walk
-    return if @is_walking
+    return if @is_walking || @is_falling || @is_jumping
 
     Thread.new do
       sleep @walk_duration
@@ -73,16 +77,61 @@ class Character
     end
 
     @is_walking = true
-    @window.advance_stage
+
+    next_elevations = @window.advance_stage
+    if next_elevations.nil?
+      puts 'next_elevations was nil!'
+      return # FIXME: What's causing this?
+    end
+
+    # Handle falling off current elevation when walking.
+    puts "[walk] Elevation before: #{@current_elevation}"
+    if @current_elevation == 1 && !next_elevations[1]
+      @current_elevation -= 1
+      @is_falling = true
+    elsif @current_elevation == 2 && !next_elevations[2]
+      @current_elevation -= 1
+      @is_falling = true
+      if !next_elevations[1]
+        @current_elevation -= 1
+        @is_falling = true
+      end
+    end
+    puts "[walk] Eleavtion after: #{@current_elevation}"
+
   end
 
   def jump
-    return if @is_jumping || @is_falling
+    return if @is_jumping || @is_falling || @is_walking
 
     @is_jumping = true
-    set_sprite('alienBlue_jump.png')
-    @window.advance_stage
     @jump_start_time = Time.now
+    set_sprite('alienBlue_jump.png')
+
+    next_elevations = @window.advance_stage
+    if next_elevations.nil?
+      puts 'next_elevations was nil!'
+      return # FIXME: What's causing this?
+    end
+
+    # Handle jumping to higher elevation.
+    puts "[jump] Eleavtion before: #{@current_elevation}"
+    if @current_elevation == 0 && next_elevations[1]
+      @current_elevation += 1
+    elsif @current_elevation == 1 && next_elevations[2]
+      @current_elevation += 1
+    end
+
+    # Handle falling off current elevation when jumping.
+    if @current_elevation == 1 && (!next_elevations[1] && !next_elevations[2])
+      @current_elevation -= 1
+    elsif @current_elevation == 2 && !next_elevations[2]
+      @current_elevation -= 1
+      if !next_elevations[1]
+        @current_elevation -= 1
+      end
+    end
+    puts "[jump] Eleavtion after: #{@current_elevation}"
   end
 
   # Calculate vertical velocity based on jumping and falling durations.
