@@ -34,16 +34,20 @@ module Level1
   def self.advance_duration = @advance_duration
 
   def self.advance_stage
-    return if @advancing
+    return @elevation_map[clamped_stage(@stage)] if @advancing
 
     Thread.new do
       sleep @advance_duration
       @advancing = false
-      @stage += 1
+      @stage = clamped_stage(@stage + 1)
     end
 
     @advancing = true
-    @elevation_map[@stage + 1]
+    @elevation_map[clamped_stage(@stage + 1)]
+  end
+
+  def self.clamped_stage(candidate_stage)
+    candidate_stage.clamp(*@elevation_map.keys.minmax_by{|k, _v| k })
   end
 
   # FIXME: Tried attr_reader but didn't work, might need a class instead of a module?
