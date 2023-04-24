@@ -115,7 +115,7 @@ class Character
 
     # Handle jumping to higher elevation.
     puts "[jump] Eleavtion before: #{@current_elevation}"
-    if @current_elevation == 0 && next_elevations[1]
+    if @current_elevation.zero? && next_elevations[1]
       @current_elevation += 1
     elsif @current_elevation == 1 && next_elevations[2]
       @current_elevation += 1
