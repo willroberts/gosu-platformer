@@ -11,8 +11,10 @@ class Character
     @walk_duration = 1.7583 # TODO: Reduce duplication with the math in Level1.
     @is_walking = false
 
-    @x, @y = x, y
-    @x_scale, @y_scale = 1, 1
+    @x = x
+    @y = y
+    @x_scale = 1
+    @y_scale = 1
 
     @jump_impulse = 22.0 # Pixels per frame.
     @jump_gravity = 31.0 # Pixels per square second.
@@ -64,11 +66,11 @@ class Character
   def walk
     return if @is_walking
 
-    Thread.new {
+    Thread.new do
       sleep @walk_duration
       @is_walking = false
       reset_sprite
-    }
+    end
 
     @is_walking = true
     @window.advance_stage
