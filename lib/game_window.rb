@@ -50,8 +50,7 @@ class GameWindow < Gosu::Window
   # We should move this timer here so we can do more callback-type things with it.
   # For example, we need to disable input handling until advancing the stage (movement, animations) is done.
   def advance_stage
-    elevations = @current_level.advance_stage
-    elevations
+    @current_level.advance_stage
   end
 
   def draw

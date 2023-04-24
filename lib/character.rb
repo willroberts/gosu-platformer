@@ -92,13 +92,12 @@ class Character
     elsif @current_elevation == 2 && !next_elevations[2]
       @current_elevation -= 1
       @is_falling = true
-      if !next_elevations[1]
+      unless next_elevations[1]
         @current_elevation -= 1
         @is_falling = true
       end
     end
     puts "[walk] Eleavtion after: #{@current_elevation}"
-
   end
 
   def jump
@@ -127,9 +126,7 @@ class Character
       @current_elevation -= 1
     elsif @current_elevation == 2 && !next_elevations[2]
       @current_elevation -= 1
-      if !next_elevations[1]
-        @current_elevation -= 1
-      end
+      @current_elevation -= 1 unless next_elevations[1]
     end
     puts "[jump] Eleavtion after: #{@current_elevation}"
   end

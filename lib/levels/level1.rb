@@ -41,8 +41,7 @@ module Level1
     end
 
     @advancing = true
-    next_elevations = @elevation_map[@stage + 1]
-    next_elevations
+    @elevation_map[@stage + 1]
   end
 
   # FIXME: Tried attr_reader but didn't work, might need a class instead of a module?
