@@ -12,9 +12,7 @@ module UI
     @font.draw_text('Press SPACE to jump', 10, 70, ZOrder::UI, 1.0, 1.0, Gosu::Color::BLACK)
     @font.draw_text('Press ESC to quit', 10, 100, ZOrder::UI, 1.0, 1.0, Gosu::Color::BLACK)
 
-    if @enable_debug_grid
-      draw_debug_grid
-    end
+    draw_debug_grid if @enable_debug_grid
   end
 
   # Draws a grid of columns (x values) and rows (y values) for checking pixel precision.

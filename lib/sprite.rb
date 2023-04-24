@@ -7,8 +7,6 @@ class Sprite
     self[File.join('character', filename), **opts]
   end
 
-  private
-
   def self.[](filename, **opts)
     cache[cache_key(filename, **opts)] ||=
       Gosu::Image.new(File.join(GameWindow.root_dir, 'sprites', filename), **opts)
