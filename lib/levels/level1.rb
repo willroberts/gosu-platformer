@@ -47,7 +47,7 @@ module Level1
     return unless @advancing
 
     @pos_x -= @advance_speed
-    @bg_positions.map! { |x| x -= @bg_speed }
+    @bg_positions.map! { |x| x - @bg_speed }
   end
 
   def self.draw

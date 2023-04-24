@@ -10,7 +10,7 @@ end
 class GameWindow < Gosu::Window
   include Singleton
 
-  attr_reader :game_state, :root_dir, :character, :current_level
+  attr_reader :game_state, :root_dir, :current_level
 
   def self.root_dir = instance.root_dir
   def self.scene = instance.scene
