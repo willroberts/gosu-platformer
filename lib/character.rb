@@ -48,7 +48,7 @@ class Character
     elsif @is_jumping || @is_falling
       v = vert_velocity
       @y -= v
-      if v < 0
+      if v.negative?
         # We are now falling.
         @is_jumping = false
         @is_falling = true
