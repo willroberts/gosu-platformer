@@ -46,6 +46,9 @@ class GameWindow < Gosu::Window
   end
 
   # Triggered by player input.
+  # FIXME: There is a timer in lib/levels/level1.rb which handles advancing the stage.
+  # We should move this timer here so we can do more callback-type things with it.
+  # For example, we need to disable input handling until advancing the stage (movement, animations) is done.
   def advance_stage
     @current_level.advance_stage
   end
