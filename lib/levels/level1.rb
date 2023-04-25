@@ -56,9 +56,9 @@ module Level1
   end
 
   def self.update
-    # Move the character to the right by moving the level to the left.
     return unless @advancing
 
+    # Move the character to the right by moving the level to the left.
     @pos_x -= @advance_speed
     @bg_positions.map! { |x| x - @bg_speed }
   end
