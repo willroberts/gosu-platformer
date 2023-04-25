@@ -93,7 +93,6 @@ class Character
     end
 
     # Handle falling off current elevation when walking.
-    puts "[walk] Elevation before: #{@current_elevation}"
     if @current_elevation == 1 && !next_elevations[1]
       delay_fall
     elsif @current_elevation == 2 && !next_elevations[2]
@@ -102,7 +101,6 @@ class Character
         delay_fall
       end
     end
-    puts "[walk] Elevation after: #{@current_elevation}"
   end
 
   def delay_fall
@@ -127,7 +125,6 @@ class Character
     end
 
     # Handle jumping to higher elevation.
-    puts "[jump] Elevation before: #{@current_elevation}"
     if @current_elevation.zero? && next_elevations[1]
       @current_elevation += 1
     elsif @current_elevation == 1 && next_elevations[2]
@@ -141,7 +138,6 @@ class Character
       @current_elevation -= 1
       @current_elevation -= 1 unless next_elevations[1]
     end
-    puts "[jump] Elevation after: #{@current_elevation}"
   end
 
   # Calculate vertical velocity based on jumping and falling durations.
