@@ -155,6 +155,7 @@ class Character
   ### Draw Loop ###
 
   def draw
+    # TODO: Implement damage FX by using (Gosu.milliseconds % 100) to selectively draw the character, creating a "flashing" effect.
     @sprite.draw_rot(x, y, ZOrder::CHARACTER, 0, 0.5, 0.5, x_scale, y_scale)
   end
 end
