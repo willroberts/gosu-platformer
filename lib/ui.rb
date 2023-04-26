@@ -4,7 +4,6 @@ module UI
   def self.initialize
     @hud_font = Gosu::Font.new(20)
     @big_font = Gosu::Font.new(64)
-    @cardback_color = Gosu::Color.argb(0xff_299adb)
     @health_frame = Gosu::Image.new('sprites/hud/health_frame.png', tileable: false)
     @health_bar = Gosu::Image.new('sprites/hud/health_bar.png', tileable: false)
     @window_sprite = Gosu::Image.new('sprites/hud/window.png', tileable: false)
@@ -41,15 +40,14 @@ module UI
     end
 
     # Card choices.
-    # FIXME: Replace cardback rectangles with nicer graphics.
     if !input_locked
       if choices.length == 3
-        Gosu.draw_rect(400, 40, 128, 128, @cardback_color)
-        @hud_font.draw_text(choices[0].text, 400+44, 40+4, ZOrder::UI, 1.0, 1.0, Gosu::Color::WHITE)
-        Gosu.draw_rect(576, 40, 128, 128, @cardback_color)
-        @hud_font.draw_text(choices[1].text, 576+44, 40+4, ZOrder::UI, 1.0, 1.0, Gosu::Color::WHITE)
-        Gosu.draw_rect(752, 40, 128, 128, @cardback_color)
-        @hud_font.draw_text(choices[2].text, 752+44, 40+4, ZOrder::UI, 1.0, 1.0, Gosu::Color::WHITE)
+        @window_sprite.draw(400, 40, ZOrder::UI_BACKDROP, 0.1559, 0.2525)
+        @hud_font.draw_text(choices[0].text, 400+44, 40+54, ZOrder::UI, 1.0, 1.0, Gosu::Color::BLACK)
+        @window_sprite.draw(576, 40, ZOrder::UI_BACKDROP, 0.1559, 0.2525)
+        @hud_font.draw_text(choices[1].text, 576+44, 40+54, ZOrder::UI, 1.0, 1.0, Gosu::Color::BLACK)
+        @window_sprite.draw(752, 40, ZOrder::UI_BACKDROP, 0.1559, 0.2525)
+        @hud_font.draw_text(choices[2].text, 752+44, 40+54, ZOrder::UI, 1.0, 1.0, Gosu::Color::BLACK)
       else
         raise 'Invalid number of choices!'
       end
