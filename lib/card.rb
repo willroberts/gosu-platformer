@@ -1,41 +1,42 @@
 class Card
-  attr_reader :visible, :size, :text, :icon, :desc
-  def new
-    @visible = false
-    @size = 128
+  attr_reader :action, :text, :icon, :desc
+  def initialize
+    @action = nil
     @text = ''
     @icon = nil
-    @desc = ''
-
-    puts 'initialized a card'
+    @desc = '' # On hover (TBD).
   end
 end
 
 class WalkCard < Card
-  def new
+  def initialize
     super
 
-    @text = "Rest"
+    @action = :walk
+    @text = "Walk"
+    @icon = nil
     @desc = "Move forward without jumping."
-
-    puts 'initialized a walk card'
   end
 end
 
 class JumpCard < Card
-  def new
+  def initialize
     super
 
+    @action = :jump
     @text = "Jump"
+    @icon = nil
     @desc = "Jump and move forward."
   end
 end
 
 class RestCard < Card
-  def new
+  def initialize
     super
 
+    @action = :rest
     @text = "Rest"
+    @icon = nil
     @desc = "Pass the turn, regaining 1 HP."
   end
 end

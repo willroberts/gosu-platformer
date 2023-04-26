@@ -66,7 +66,7 @@ class Character
             # This value is needs to be longer if traversing from higher to
             # lower elevation ~ 0.6s
             jitter = 0.4
-            sleep(Level1.advance_duration / 2 - jitter)
+            sleep(@window.advance_duration / 2 - jitter)
             @is_walking = false
             reset_sprite
           end
@@ -105,7 +105,7 @@ class Character
 
   def delay_fall
     Thread.new do
-      sleep(Level1.advance_duration / 2 + 0.1)
+      sleep(@window.advance_duration / 2 + 0.1)
       @current_elevation -= 1
       @is_falling = true
     end
