@@ -121,7 +121,7 @@ class Character
     next_elevations = @window.advance_stage
     if next_elevations.nil?
       puts 'next_elevations was nil!'
-      return # FIXME: What's causing this?
+      return # FIXME: Is this still happening?
     end
 
     # Handle jumping to higher elevation.

@@ -14,6 +14,9 @@ module UI
     stage = game_state.current_stage
     choices = game_state.choices
     input_locked = game_state.input_locked
+    player_health = game_state.player_health
+
+    # Display health bar.
 
     # Top-left text UI.
     @hud_font.draw_text("Current stage: #{stage}", 10, 10, ZOrder::UI, 1.0, 1.0, Gosu::Color::BLACK)
