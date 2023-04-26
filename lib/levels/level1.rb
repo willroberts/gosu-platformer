@@ -26,10 +26,8 @@ module Level1
     }
   end
 
-  def self.advance_stage
-    return @elevation_map[clamped_stage(@stage)] if @advancing
-
-    @elevation_map[clamped_stage(@stage + 1)]
+  def self.get_next_elevations(stage)
+    @elevation_map[clamped_stage(stage)]
   end
 
   def self.clamped_stage(candidate_stage)
@@ -41,8 +39,8 @@ module Level1
     @stage
   end
 
-  def self.update
-    return unless @advancing
+  def self.update(game_state) # FIXME: Stop passing game state everywhere lol.
+    return unless game_state.advancing
 
     # Move the character to the right by moving the level to the left.
     @pos_x -= @fg_speed

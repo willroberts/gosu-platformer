@@ -41,7 +41,7 @@ class GameWindow < Gosu::Window
 
   def update
     handle_input
-    @current_level.update
+    @current_level.update @game_state
     @game_state.current_stage = @current_level.get_stage
     character.update_locomotion
   end
@@ -85,7 +85,7 @@ class GameWindow < Gosu::Window
     end
 
     @game_state.advancing = true
-    @current_level.advance_stage
+    return @current_level.get_next_elevations(@game_state.current_stage)
   end
 
   def draw
