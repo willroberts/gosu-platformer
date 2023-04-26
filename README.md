@@ -15,3 +15,4 @@ Software:
 
 Art:
 - Environments and Characters: Creative Commons CC0 1.0 Universal (credit: www.kenney.nl)
+- UI Elements: Creative Commons CC-BY-3.0 (credit: www.dycha.net)
