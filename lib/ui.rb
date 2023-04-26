@@ -13,21 +13,24 @@ module UI
     # Parse game state.
     stage = game_state.current_stage
     choices = game_state.choices
+    input_locked = game_state.input_locked
 
     # Top-left text UI.
     @hud_font.draw_text("Current stage: #{stage}", 10, 10, ZOrder::UI, 1.0, 1.0, Gosu::Color::BLACK)
     @hud_font.draw_text('Press ESC to quit', 10, 40, ZOrder::UI, 1.0, 1.0, Gosu::Color::BLACK)
 
     # Card choices.
-    if choices.length == 3
-      Gosu.draw_rect(400, 40, 128, 128, @cardback_color)
-      @hud_font.draw_text(choices[0].text, 400+44, 40+4, ZOrder::UI, 1.0, 1.0, Gosu::Color::WHITE)
-      Gosu.draw_rect(576, 40, 128, 128, @cardback_color)
-      @hud_font.draw_text(choices[1].text, 576+44, 40+4, ZOrder::UI, 1.0, 1.0, Gosu::Color::WHITE)
-      Gosu.draw_rect(752, 40, 128, 128, @cardback_color)
-      @hud_font.draw_text(choices[2].text, 752+44, 40+4, ZOrder::UI, 1.0, 1.0, Gosu::Color::WHITE)
-    else
-      raise 'Invalid number of choices!'
+    if !input_locked
+      if choices.length == 3
+        Gosu.draw_rect(400, 40, 128, 128, @cardback_color)
+        @hud_font.draw_text(choices[0].text, 400+44, 40+4, ZOrder::UI, 1.0, 1.0, Gosu::Color::WHITE)
+        Gosu.draw_rect(576, 40, 128, 128, @cardback_color)
+        @hud_font.draw_text(choices[1].text, 576+44, 40+4, ZOrder::UI, 1.0, 1.0, Gosu::Color::WHITE)
+        Gosu.draw_rect(752, 40, 128, 128, @cardback_color)
+        @hud_font.draw_text(choices[2].text, 752+44, 40+4, ZOrder::UI, 1.0, 1.0, Gosu::Color::WHITE)
+      else
+        raise 'Invalid number of choices!'
+      end
     end
 
     # Level debug grid.
