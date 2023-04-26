@@ -3,8 +3,9 @@
 module UI
   def self.initialize
     @hud_font = Gosu::Font.new(20)
-
     @cardback_color = Gosu::Color.argb(0xff_299adb)
+    @health_frame = Gosu::Image.new('sprites/hud/health_frame.png', tileable: false)
+    @health_bar = Gosu::Image.new('sprites/hud/health_bar.png', tileable: false)
 
     @enable_debug_grid = false
   end
@@ -17,10 +18,12 @@ module UI
     player_health = game_state.player_health
 
     # Display health bar.
+    @health_frame.draw(10, 10, ZOrder::UI, 0.5, 0.5)
+    @health_bar.draw(20, 20, ZOrder::UI, player_health * 0.1, 0.5)
 
     # Top-left text UI.
-    @hud_font.draw_text("Current stage: #{stage}", 10, 10, ZOrder::UI, 1.0, 1.0, Gosu::Color::BLACK)
-    @hud_font.draw_text('Press ESC to quit', 10, 40, ZOrder::UI, 1.0, 1.0, Gosu::Color::BLACK)
+    @hud_font.draw_text("Current stage: #{stage}", 15, 60, ZOrder::UI, 1.0, 1.0, Gosu::Color::BLACK)
+    @hud_font.draw_text('Press ESC to quit', 15, 90, ZOrder::UI, 1.0, 1.0, Gosu::Color::BLACK)
 
     # Card choices.
     if !input_locked
