@@ -13,9 +13,7 @@ module Level1
     @bg_speed = 2.0
     @fg_speed = 4.0
 
-    # Each level has 5 stages and 3 elevations (for now).
     # elevation_map tracks whether or not each elevation has a standable platform/surface.
-    @stage = 0
     @elevation_map = {
       1 => [true, true, false],
       2 => [true, false, true],
@@ -27,16 +25,11 @@ module Level1
   end
 
   def self.get_next_elevations(stage)
-    @elevation_map[clamped_stage(stage)]
+    @elevation_map[clamped_stage(stage+1)]
   end
 
   def self.clamped_stage(candidate_stage)
     candidate_stage.clamp(*@elevation_map.keys.minmax_by{|k, _v| k })
-  end
-
-  # FIXME: Tried attr_reader but didn't work, might need a class instead of a module?
-  def self.get_stage
-    @stage
   end
 
   def self.update(game_state) # FIXME: Stop passing game state everywhere lol.
