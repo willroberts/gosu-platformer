@@ -48,6 +48,12 @@ class GameWindow < Gosu::Window
   def handle_input
     close if Gosu.button_down?(Gosu::KB_ESCAPE)
 
+    # Handle tutorial click.
+    if !@game_state.tutorial_done && Gosu.button_down?(Gosu::MS_LEFT)
+      @game_state.tutorial_done = true
+      @game_state.input_locked = false
+    end
+
     return if @game_state.input_locked
 
     if Gosu.button_down?(Gosu::MS_LEFT)

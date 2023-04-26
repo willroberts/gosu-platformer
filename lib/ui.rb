@@ -18,6 +18,7 @@ module UI
     choices = game_state.choices
     input_locked = game_state.input_locked
     player_health = game_state.player_health
+    tutorial_done = game_state.tutorial_done
     level_done = game_state.level_done
 
     # Display health bar.
@@ -27,6 +28,17 @@ module UI
     # Top-left text UI.
     @hud_font.draw_text("Current stage: #{stage}", 15, 60, ZOrder::UI, 1.0, 1.0, Gosu::Color::BLACK)
     @hud_font.draw_text('Press ESC to quit', 15, 90, ZOrder::UI, 1.0, 1.0, Gosu::Color::BLACK)
+
+    # Tutorial window.
+    unless tutorial_done
+      @window_sprite.draw(366, 266, ZOrder::UI_BACKDROP, 0.6, 0.6)
+      @hud_font.draw('Welcome to Gosu Platformer!', 500, 300, ZOrder::UI, 1.0, 1.0, Gosu::Color::BLACK)
+      @hud_font.draw('Play each turn by choosing from three action cards.', 400, 360, ZOrder::UI, 1.0, 1.0, Gosu::Color::BLACK)
+      @hud_font.draw('Use movement and abilities to avoid taking damage.', 400, 390, ZOrder::UI, 1.0, 1.0, Gosu::Color::BLACK)
+      @hud_font.draw('Heal yourself by collecting potions.', 400, 420, ZOrder::UI, 1.0, 1.0, Gosu::Color::BLACK)
+      @hud_font.draw('Make it to the end of the level to win!', 400, 450, ZOrder::UI, 1.0, 1.0, Gosu::Color::BLACK)
+      @hud_font.draw('Click anywhere to continue.', 500, 510, ZOrder::UI, 1.0, 1.0, Gosu::Color::BLACK)
+    end
 
     # Card choices.
     # FIXME: Replace cardback rectangles with nicer graphics.
