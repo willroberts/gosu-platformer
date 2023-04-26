@@ -3,8 +3,10 @@
 module UI
   def self.initialize
     @hud_font = Gosu::Font.new(20)
-
-    @cardback_color = Gosu::Color.argb(0xff_299adb)
+    @big_font = Gosu::Font.new(64)
+    @health_frame = Gosu::Image.new('sprites/hud/health_frame.png', tileable: false)
+    @health_bar = Gosu::Image.new('sprites/hud/health_bar.png', tileable: false)
+    @window_sprite = Gosu::Image.new('sprites/hud/window.png', tileable: false)
 
     @enable_debug_grid = false
   end
@@ -14,23 +16,47 @@ module UI
     stage = game_state.current_stage
     choices = game_state.choices
     input_locked = game_state.input_locked
+    player_health = game_state.player_health
+    tutorial_done = game_state.tutorial_done
+    level_done = game_state.level_done
+
+    # Display health bar.
+    @health_frame.draw(10, 10, ZOrder::UI, 0.5, 0.5)
+    @health_bar.draw(20, 20, ZOrder::UI, player_health * 0.1, 0.5)
 
     # Top-left text UI.
-    @hud_font.draw_text("Current stage: #{stage}", 10, 10, ZOrder::UI, 1.0, 1.0, Gosu::Color::BLACK)
-    @hud_font.draw_text('Press ESC to quit', 10, 40, ZOrder::UI, 1.0, 1.0, Gosu::Color::BLACK)
+    @hud_font.draw_text("Current stage: #{stage}", 15, 60, ZOrder::UI, 1.0, 1.0, Gosu::Color::BLACK)
+    @hud_font.draw_text('Press ESC to quit', 15, 90, ZOrder::UI, 1.0, 1.0, Gosu::Color::BLACK)
+
+    # Tutorial window.
+    unless tutorial_done
+      @window_sprite.draw(366, 266, ZOrder::UI_BACKDROP, 0.6, 0.6)
+      @hud_font.draw('Welcome to Gosu Platformer!', 500, 300, ZOrder::UI, 1.0, 1.0, Gosu::Color::BLACK)
+      @hud_font.draw('Play each turn by choosing from three action cards.', 400, 360, ZOrder::UI, 1.0, 1.0, Gosu::Color::BLACK)
+      @hud_font.draw('Use movement and abilities to avoid taking damage.', 400, 390, ZOrder::UI, 1.0, 1.0, Gosu::Color::BLACK)
+      @hud_font.draw('Heal yourself by collecting potions.', 400, 420, ZOrder::UI, 1.0, 1.0, Gosu::Color::BLACK)
+      @hud_font.draw('Make it to the end of the level to win!', 400, 450, ZOrder::UI, 1.0, 1.0, Gosu::Color::BLACK)
+      @hud_font.draw('Click anywhere to continue.', 500, 510, ZOrder::UI, 1.0, 1.0, Gosu::Color::BLACK)
+    end
 
     # Card choices.
     if !input_locked
       if choices.length == 3
-        Gosu.draw_rect(400, 40, 128, 128, @cardback_color)
-        @hud_font.draw_text(choices[0].text, 400+44, 40+4, ZOrder::UI, 1.0, 1.0, Gosu::Color::WHITE)
-        Gosu.draw_rect(576, 40, 128, 128, @cardback_color)
-        @hud_font.draw_text(choices[1].text, 576+44, 40+4, ZOrder::UI, 1.0, 1.0, Gosu::Color::WHITE)
-        Gosu.draw_rect(752, 40, 128, 128, @cardback_color)
-        @hud_font.draw_text(choices[2].text, 752+44, 40+4, ZOrder::UI, 1.0, 1.0, Gosu::Color::WHITE)
+        @window_sprite.draw(400, 40, ZOrder::UI_BACKDROP, 0.1559, 0.2525)
+        @hud_font.draw_text(choices[0].text, 400+44, 40+54, ZOrder::UI, 1.0, 1.0, Gosu::Color::BLACK)
+        @window_sprite.draw(576, 40, ZOrder::UI_BACKDROP, 0.1559, 0.2525)
+        @hud_font.draw_text(choices[1].text, 576+44, 40+54, ZOrder::UI, 1.0, 1.0, Gosu::Color::BLACK)
+        @window_sprite.draw(752, 40, ZOrder::UI_BACKDROP, 0.1559, 0.2525)
+        @hud_font.draw_text(choices[2].text, 752+44, 40+54, ZOrder::UI, 1.0, 1.0, Gosu::Color::BLACK)
       else
         raise 'Invalid number of choices!'
       end
+    end
+
+    # Game over text.
+    if level_done
+      @window_sprite.draw(416, 266, ZOrder::UI_BACKDROP, 0.5, 0.25)
+      @big_font.draw_text("You win!", 500, 300, ZOrder::UI, 1.0, 1.0, Gosu::Color::BLACK)
     end
 
     # Level debug grid.

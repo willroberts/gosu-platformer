@@ -2,9 +2,9 @@
 
 module Level1
   def self.initialize
-    @sprite = Gosu::Image.new('sprites/levels/level1.png', tileable: true)
-    @scale = 0.5625 # 1280px to 720px.
-    @pos_x = 0
+    @level_sprite = Gosu::Image.new('sprites/levels/level1.png', tileable: true)
+    @level_scale = 0.5625 # 1280px to 720px.
+    @level_pos_x = 0
 
     # Parallax background.
     @bg = Gosu::Image.new('sprites/background/colored_grass.png', tileable: true)
@@ -22,10 +22,28 @@ module Level1
       5 => [true, true, false],
       6 => [true, false, false]
     }
+
+    # enemy_map tracks the locations of damage sources in each stage.
+    @enemy_map = {
+      1 => [false, false, false],
+      2 => [false, false, false],
+      3 => [true, false, false],
+      4 => [false, false, false],
+      5 => [false, false, false],
+      6 => [false, false, false]
+    }
+
+    # Floor spikes!
+    @spike_sprite = Gosu::Image.new('sprites/environment/spikes.png', tileable: false)
+    @spike_pos_x = 810 # FIXME: Move around to the right place, add more spikes, etc.
   end
 
   def self.get_next_elevations(stage)
     @elevation_map[clamped_stage(stage+1)]
+  end
+
+  def self.get_enemy_map(stage)
+    @enemy_map[clamped_stage(stage)]
   end
 
   def self.clamped_stage(candidate_stage)
@@ -36,7 +54,8 @@ module Level1
     return unless game_state.advancing
 
     # Move the character to the right by moving the level to the left.
-    @pos_x -= @fg_speed
+    @level_pos_x -= @fg_speed
+    @spike_pos_x -= @fg_speed
     @bg_positions.map! { |x| x - @bg_speed }
   end
 
@@ -44,6 +63,7 @@ module Level1
     @bg_positions.each do |x|
       @bg.draw(x, 0, ZOrder::BACKGROUND, @bg_scale, @bg_scale)
     end
-    @sprite.draw(@pos_x, 0, ZOrder::LEVEL, @scale, @scale)
+    @level_sprite.draw(@level_pos_x, 0, ZOrder::LEVEL, @level_scale, @level_scale)
+    @spike_sprite.draw(@spike_pos_x, 554, ZOrder::LEVEL, 0.75, 0.75)
   end
 end

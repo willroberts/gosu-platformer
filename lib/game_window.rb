@@ -4,7 +4,7 @@ require 'gosu'
 require 'singleton'
 
 module ZOrder
-  BACKGROUND, LEVEL, PICKUPS, CHARACTER, UI = *0..4
+  BACKGROUND, LEVEL, PICKUPS, CHARACTER, UI_BACKDROP, UI = *0..5
 end
 
 class GameWindow < Gosu::Window
@@ -48,6 +48,12 @@ class GameWindow < Gosu::Window
   def handle_input
     close if Gosu.button_down?(Gosu::KB_ESCAPE)
 
+    # Handle tutorial click.
+    if !@game_state.tutorial_done && Gosu.button_down?(Gosu::MS_LEFT)
+      @game_state.tutorial_done = true
+      @game_state.input_locked = false
+    end
+
     return if @game_state.input_locked
 
     if Gosu.button_down?(Gosu::MS_LEFT)
@@ -74,10 +80,26 @@ class GameWindow < Gosu::Window
       @game_state.advancing = false
       @game_state.input_locked = false
       @game_state.current_stage += 1
+
+      # TODO: Find a better place to put this.
+      if @game_state.current_stage == 6
+        @game_state.input_locked = true
+        @game_state.level_done = true
+      end
     end
     @game_state.advancing = true
 
     return @current_level.get_next_elevations(@game_state.current_stage)
+  end
+
+  # Triggered by player input.
+  def skip_stage
+    Thread.new do
+      sleep 1
+      @game_state.input_locked = false
+    end
+
+    @game_state.input_locked = true
   end
 
   def draw

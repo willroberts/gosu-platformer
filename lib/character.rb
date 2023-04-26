@@ -38,6 +38,7 @@ class Character
     case action
     when :walk then walk
     when :jump then jump
+    when :rest then rest
     else raise "unknown action! (#{action})"
     end
   end
@@ -121,7 +122,7 @@ class Character
     next_elevations = @window.advance_stage
     if next_elevations.nil?
       puts 'next_elevations was nil!'
-      return # FIXME: What's causing this?
+      return # FIXME: Is this still happening?
     end
 
     # Handle jumping to higher elevation.
@@ -140,6 +141,11 @@ class Character
     end
   end
 
+  def rest
+    # TODO: Increase health by 1.
+    @window.skip_stage
+  end
+
   # Calculate vertical velocity based on jumping and falling durations.
   # Kinematics: v2 = v1 * at.
   def vert_velocity
@@ -155,6 +161,7 @@ class Character
   ### Draw Loop ###
 
   def draw
+    # TODO: Implement damage FX by using (Gosu.milliseconds % 100) to selectively draw the character, creating a "flashing" effect.
     @sprite.draw_rot(x, y, ZOrder::CHARACTER, 0, 0.5, 0.5, x_scale, y_scale)
   end
 end
