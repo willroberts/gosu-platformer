@@ -59,9 +59,6 @@ class GameWindow < Gosu::Window
       action = @game_state.choices[choice].action
       character.perform(action)
     end
-
-    #character.perform(:walk) if Gosu.button_down?(Gosu::KB_W)
-    #character.perform(:jump) if Gosu.button_down?(Gosu::KB_SPACE)
   end
 
   def determine_click_location(x, y)
@@ -72,9 +69,6 @@ class GameWindow < Gosu::Window
   end
 
   # Triggered by player input.
-  # FIXME: There is a timer in lib/levels/level1.rb which handles advancing the stage.
-  # We should move this timer here so we can do more callback-type things with it.
-  # For example, we need to disable input handling until advancing the stage (movement, animations) is done.
   def advance_stage
     Thread.new do
       sleep @advance_duration
