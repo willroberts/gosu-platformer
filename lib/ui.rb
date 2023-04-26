@@ -3,9 +3,11 @@
 module UI
   def self.initialize
     @hud_font = Gosu::Font.new(20)
+    @big_font = Gosu::Font.new(64)
     @cardback_color = Gosu::Color.argb(0xff_299adb)
     @health_frame = Gosu::Image.new('sprites/hud/health_frame.png', tileable: false)
     @health_bar = Gosu::Image.new('sprites/hud/health_bar.png', tileable: false)
+    @window_sprite = Gosu::Image.new('sprites/hud/window.png', tileable: false)
 
     @enable_debug_grid = false
   end
@@ -16,6 +18,7 @@ module UI
     choices = game_state.choices
     input_locked = game_state.input_locked
     player_health = game_state.player_health
+    level_done = game_state.level_done
 
     # Display health bar.
     @health_frame.draw(10, 10, ZOrder::UI, 0.5, 0.5)
@@ -38,6 +41,12 @@ module UI
       else
         raise 'Invalid number of choices!'
       end
+    end
+
+    # Game over text.
+    if level_done
+      @window_sprite.draw(416, 266, ZOrder::UI_BACKDROP, 0.5, 0.25)
+      @big_font.draw_text("You win!", 500, 300, ZOrder::UI, 1.0, 1.0, Gosu::Color::BLACK)
     end
 
     # Level debug grid.

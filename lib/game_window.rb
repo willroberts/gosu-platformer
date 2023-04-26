@@ -4,7 +4,7 @@ require 'gosu'
 require 'singleton'
 
 module ZOrder
-  BACKGROUND, LEVEL, PICKUPS, CHARACTER, UI = *0..4
+  BACKGROUND, LEVEL, PICKUPS, CHARACTER, UI_BACKDROP, UI = *0..5
 end
 
 class GameWindow < Gosu::Window
@@ -74,6 +74,12 @@ class GameWindow < Gosu::Window
       @game_state.advancing = false
       @game_state.input_locked = false
       @game_state.current_stage += 1
+
+      # TODO: Find a better place to put this.
+      if @game_state.current_stage == 6
+        @game_state.input_locked = true
+        @game_state.level_done = true
+      end
     end
     @game_state.advancing = true
 
