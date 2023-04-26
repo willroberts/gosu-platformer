@@ -26,6 +26,7 @@ module UI
     @hud_font.draw_text('Press ESC to quit', 15, 90, ZOrder::UI, 1.0, 1.0, Gosu::Color::BLACK)
 
     # Card choices.
+    # FIXME: Replace cardback rectangles with nicer graphics.
     if !input_locked
       if choices.length == 3
         Gosu.draw_rect(400, 40, 128, 128, @cardback_color)
