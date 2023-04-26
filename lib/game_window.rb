@@ -53,7 +53,6 @@ class GameWindow < Gosu::Window
     if Gosu.button_down?(Gosu::MS_LEFT)
       choice = determine_click_location(self.mouse_x, self.mouse_y)
       return if choice.negative? # Nothing clicked.
-      puts "Card #{choice} clicked"
 
       @game_state.input_locked = true
       action = @game_state.choices[choice].action
@@ -78,9 +77,7 @@ class GameWindow < Gosu::Window
     end
     @game_state.advancing = true
 
-    next_elevations = @current_level.get_next_elevations(@game_state.current_stage)
-    puts "Next elevations: #{next_elevations}"
-    next_elevations
+    return @current_level.get_next_elevations(@game_state.current_stage)
   end
 
   def draw
