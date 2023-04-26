@@ -92,6 +92,16 @@ class GameWindow < Gosu::Window
     return @current_level.get_next_elevations(@game_state.current_stage)
   end
 
+  # Triggered by player input.
+  def skip_stage
+    Thread.new do
+      sleep 1
+      @game_state.input_locked = false
+    end
+
+    @game_state.input_locked = true
+  end
+
   def draw
     @current_level.draw
     character.draw

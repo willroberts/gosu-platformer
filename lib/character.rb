@@ -38,6 +38,7 @@ class Character
     case action
     when :walk then walk
     when :jump then jump
+    when :rest then rest
     else raise "unknown action! (#{action})"
     end
   end
@@ -138,6 +139,11 @@ class Character
       @current_elevation -= 1
       @current_elevation -= 1 unless next_elevations[1]
     end
+  end
+
+  def rest
+    # TODO: Increase health by 1.
+    @window.skip_stage
   end
 
   # Calculate vertical velocity based on jumping and falling durations.
