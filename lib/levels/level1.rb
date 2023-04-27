@@ -14,6 +14,7 @@ module Level1
     @fg_speed = 4.0
 
     # elevation_map tracks whether or not each elevation has a standable platform/surface.
+    # TODO: Implement a Grid class? That could make tracking platforms/enemies/potions easier.
     @elevation_map = {
       1 => [true, true, false],
       2 => [true, false, true],
@@ -40,8 +41,8 @@ module Level1
     candidate_stage.clamp(*@elevation_map.keys.minmax_by{|k, _v| k })
   end
 
-  def self.update(game_state) # FIXME: Stop passing game state everywhere lol.
-    return unless game_state.advancing
+  def self.update(is_advancing)
+    return unless is_advancing
 
     # Move the character to the right by moving the level to the left.
     @level_pos_x -= @fg_speed
