@@ -13,8 +13,10 @@ module Level1
     @bg_speed = 2.0
     @fg_speed = 4.0
 
+    # The level grid keeps track of all possible stages, platforms, enemies, potions, etc.
+    @grid = Grid.new(6, 3)
+
     # elevation_map tracks whether or not each elevation has a standable platform/surface.
-    # TODO: Implement a Grid class? That could make tracking platforms/enemies/potions easier.
     @elevation_map = {
       1 => [true, true, false],
       2 => [true, false, true],
