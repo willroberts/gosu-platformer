@@ -23,16 +23,6 @@ module Level1
       6 => [true, false, false]
     }
 
-    # enemy_map tracks the locations of damage sources in each stage.
-    @enemy_map = {
-      1 => [false, false, false],
-      2 => [false, false, false],
-      3 => [true, false, false],
-      4 => [false, false, false],
-      5 => [false, false, false],
-      6 => [false, false, false]
-    }
-
     # Floor spikes!
     @spike_sprite = Gosu::Image.new('sprites/environment/spikes.png', tileable: false)
     @spike_pos_x = 530
@@ -44,10 +34,6 @@ module Level1
 
   def self.get_next_elevations(stage)
     @elevation_map[clamped_stage(stage+1)]
-  end
-
-  def self.get_enemy_map(stage)
-    @enemy_map[clamped_stage(stage)]
   end
 
   def self.clamped_stage(candidate_stage)
