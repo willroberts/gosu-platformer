@@ -1,5 +1,7 @@
 # Grid keeps track of the contents of each level.
 class Grid
+  attr_reader :cells
+
   def initialize(cols, rows)
     @cells = []
     (0..cols).each do |x|
