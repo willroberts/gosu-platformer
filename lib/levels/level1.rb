@@ -53,9 +53,7 @@ module Level1
     candidate_stage.clamp(*@elevation_map.keys.minmax_by{|k, _v| k })
   end
 
-  def self.update(is_advancing)
-    return unless is_advancing
-
+  def self.update()
     # Move the character to the right by moving the level to the left.
     @level_pos_x -= @fg_speed
     @spike_positions.map! { |x| x -= @fg_speed }
