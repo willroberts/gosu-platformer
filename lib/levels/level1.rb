@@ -35,7 +35,11 @@ module Level1
 
     # Floor spikes!
     @spike_sprite = Gosu::Image.new('sprites/environment/spikes.png', tileable: false)
-    @spike_pos_x = 810 # FIXME: Move around to the right place, add more spikes, etc.
+    @spike_pos_x = 530
+
+    # Potions!
+    @potion_sprite = Gosu::Image.new('sprites/items/potionRed.png', tileable: false)
+    @potion_pos_x = 1060
   end
 
   def self.get_next_elevations(stage)
@@ -56,6 +60,7 @@ module Level1
     # Move the character to the right by moving the level to the left.
     @level_pos_x -= @fg_speed
     @spike_pos_x -= @fg_speed
+    @potion_pos_x -= @fg_speed
     @bg_positions.map! { |x| x - @bg_speed }
   end
 
@@ -65,5 +70,6 @@ module Level1
     end
     @level_sprite.draw(@level_pos_x, 0, ZOrder::LEVEL, @level_scale, @level_scale)
     @spike_sprite.draw(@spike_pos_x, 554, ZOrder::LEVEL, 0.75, 0.75)
+    @potion_sprite.draw(@potion_pos_x, 570, ZOrder::LEVEL, 0.75, 0.75)
   end
 end
