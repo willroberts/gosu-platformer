@@ -24,10 +24,6 @@ module UI
     @health_frame.draw(10, 10, ZOrder::UI, 0.5, 0.5)
     @health_bar.draw(20, 20, ZOrder::UI, player_health * 0.1, 0.5)
 
-    # Top-left text UI.
-    @hud_font.draw_text("Current stage: #{stage}", 15, 60, ZOrder::UI, 1.0, 1.0, Gosu::Color::BLACK)
-    @hud_font.draw_text('Press ESC to quit', 15, 90, ZOrder::UI, 1.0, 1.0, Gosu::Color::BLACK)
-
     # Tutorial window.
     unless tutorial_done
       @window_sprite.draw(366, 266, ZOrder::UI_BACKDROP, 0.6, 0.6)

@@ -41,7 +41,7 @@ class GameWindow < Gosu::Window
 
   def update
     handle_input
-    @current_level.update @game_state
+    @current_level.update if @game_state.advancing
     character.update_locomotion
   end
 
