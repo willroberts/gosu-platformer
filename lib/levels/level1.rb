@@ -15,9 +15,19 @@ module Level1
 
     # The level grid keeps track of all possible stages, platforms, enemies, potions, etc.
     @grid = Grid.new(6, 3)
+    @grid.add_platforms([0, 0],
+                        [1, 0], [1, 1],
+                        [2, 0], [2, 2],
+                        [3, 0], [3, 1],
+                        [4, 0], [4, 2],
+                        [5, 0], [5, 1],
+                        [6, 0])
+    @grid.add_enemies([1, 1])
+    @grid.add_potions([2, 1])
 
     # elevation_map tracks whether or not each elevation has a standable platform/surface.
     @elevation_map = {
+      0 => [true, false, false], # Starting stage, not accessed.
       1 => [true, true, false],
       2 => [true, false, true],
       3 => [true, true, false],

@@ -9,12 +9,32 @@ class Grid
       end
     end
   end
+
+  def add_platforms(*coords)
+    coords.each do |x, y|
+      @cells[x][y].platform = true
+    end
+  end
+
+  def add_enemies(*coords)
+    coords.each do |x, y|
+      @cells[x][y].enemy = true
+    end
+  end
+
+  def add_potions(*coords)
+    coords.each do |x, y|
+      @cells[x][y].potion = true
+    end
+  end
 end
 
 class Cell
+  attr_accessor :platform, :enemy, :potion
+
   def initialize
     @platform = false
-    @enemy = nil
-    @potion = nil
+    @enemy = false
+    @potion = false
   end
 end
