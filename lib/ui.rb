@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-module UI
-  def self.initialize
+class UI
+  def initialize
     @hud_font = Gosu::Font.new(20)
     @big_font = Gosu::Font.new(64)
     @health_frame = Gosu::Image.new('sprites/hud/health_frame.png', tileable: false)
@@ -11,7 +11,7 @@ module UI
     @enable_debug_grid = false
   end
 
-  def self.draw(game_state)
+  def draw(game_state)
     # Parse game state.
     stage = game_state.current_stage
     choices = game_state.choices
@@ -26,24 +26,28 @@ module UI
 
     # Tutorial window.
     unless tutorial_done
-      @window_sprite.draw(366, 266, ZOrder::UI_BACKDROP, 0.6, 0.6)
-      @hud_font.draw('Welcome to Gosu Platformer!', 500, 300, ZOrder::UI, 1.0, 1.0, Gosu::Color::BLACK)
-      @hud_font.draw('Play each turn by choosing from three action cards.', 400, 360, ZOrder::UI, 1.0, 1.0, Gosu::Color::BLACK)
-      @hud_font.draw('Use movement and abilities to avoid taking damage.', 400, 390, ZOrder::UI, 1.0, 1.0, Gosu::Color::BLACK)
-      @hud_font.draw('Heal yourself by collecting potions.', 400, 420, ZOrder::UI, 1.0, 1.0, Gosu::Color::BLACK)
-      @hud_font.draw('Make it to the end of the level to win!', 400, 450, ZOrder::UI, 1.0, 1.0, Gosu::Color::BLACK)
-      @hud_font.draw('Click anywhere to continue.', 500, 510, ZOrder::UI, 1.0, 1.0, Gosu::Color::BLACK)
+      draw_window_sprite(x: 366, y: 266, x_scale: 0.6, y_scale: 0.6)
+      hud_text('Welcome to Gosu Platformer!', x: 500, y: 300)
+      hud_text('Play each turn by choosing from three action cards.', x: 400, y: 360)
+      hud_text('Use movement and abilities to avoid taking damage.', x: 400, y: 390)
+      hud_text('Heal yourself by collecting potions.', x: 400, y: 420)
+      hud_text('Make it to the end of the level to win!', x: 400, y: 450)
+      hud_text('Click anywhere to continue.', x: 500, y: 510)
     end
 
     # Card choices.
     if !input_locked
       if choices.length == 3
-        @window_sprite.draw(400, 40, ZOrder::UI_BACKDROP, 0.1559, 0.2525)
-        @hud_font.draw_text(choices[0].text, 400+44, 40+54, ZOrder::UI, 1.0, 1.0, Gosu::Color::BLACK)
-        @window_sprite.draw(576, 40, ZOrder::UI_BACKDROP, 0.1559, 0.2525)
-        @hud_font.draw_text(choices[1].text, 576+44, 40+54, ZOrder::UI, 1.0, 1.0, Gosu::Color::BLACK)
-        @window_sprite.draw(752, 40, ZOrder::UI_BACKDROP, 0.1559, 0.2525)
-        @hud_font.draw_text(choices[2].text, 752+44, 40+54, ZOrder::UI, 1.0, 1.0, Gosu::Color::BLACK)
+        sprite_constants = {y: 40, x_scale: 0.1559, y_scale: 0.2525}
+
+        draw_window_sprite(x: 400, **sprite_constants)
+        hud_text(choices[0].text, x: 400+44, y: 40+54)
+
+        draw_window_sprite(x: 576, **sprite_constants)
+        hud_text(choices[1].text, x: 576+44, y: 40+54)
+
+        draw_window_sprite(x: 752, **sprite_constants)
+        hud_text(choices[2].text, x: 752+44, y: 40+54)
       else
         raise 'Invalid number of choices!'
       end
@@ -51,7 +55,7 @@ module UI
 
     # Game over text.
     if level_done
-      @window_sprite.draw(416, 266, ZOrder::UI_BACKDROP, 0.5, 0.25)
+      draw_window_sprite(x: 416, y: 266, x_scale: 0.5, y_scale: 0.25)
       @big_font.draw_text("You win!", 500, 300, ZOrder::UI, 1.0, 1.0, Gosu::Color::BLACK)
     end
 
@@ -60,7 +64,7 @@ module UI
   end
 
   # Draws a grid of columns (x values) and rows (y values) for checking pixel precision.
-  def self.draw_debug_grid
+  def draw_debug_grid
     72.step(1280, 72).each do |x|
       Gosu.draw_line(
         x, 0, Gosu::Color::BLACK,
@@ -73,5 +77,13 @@ module UI
         1280, y, Gosu::Color::BLACK
       )
     end
+  end
+
+  def hud_text(text, x:, y:)
+    @hud_font.draw_text(text, x, y, ZOrder::UI, 1.0, 1.0, Gosu::Color::BLACK)
+  end
+
+  def draw_window_sprite(x:, y:, x_scale:, y_scale:)
+    @window_sprite.draw(x, y, ZOrder::UI_BACKDROP, x_scale, y_scale)
   end
 end

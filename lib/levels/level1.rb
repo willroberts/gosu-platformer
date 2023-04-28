@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-module Level1
-  def self.initialize
+class Level1
+  def initialize
     @level_sprite = Gosu::Image.new('sprites/levels/level1.png', tileable: true)
     @level_scale = 0.5625 # 1280px to 720px.
     @level_pos_x = 0
@@ -45,15 +45,15 @@ module Level1
     @potion_positions = [1060]
   end
 
-  def self.get_next_elevations(stage)
+  def get_next_elevations(stage)
     @elevation_map[clamped_stage(stage+1)]
   end
 
-  def self.clamped_stage(candidate_stage)
+  def clamped_stage(candidate_stage)
     candidate_stage.clamp(*@elevation_map.keys.minmax_by{|k, _v| k })
   end
 
-  def self.update()
+  def update()
     # Move the character to the right by moving the level to the left.
     @level_pos_x -= @fg_speed
     @spike_positions.map! { |x| x -= @fg_speed }
@@ -61,7 +61,7 @@ module Level1
     @bg_positions.map! { |x| x - @bg_speed }
   end
 
-  def self.draw
+  def draw
     @bg_positions.each do |x|
       @bg.draw(x, 0, ZOrder::BACKGROUND, @bg_scale, @bg_scale)
     end
