@@ -1,10 +1,11 @@
 # frozen_string_literal: true
 
-module Level1
-  def self.initialize
+class Level1
+  def initialize
     @level_sprite = Gosu::Image.new('sprites/levels/level1.png', tileable: true)
     @level_scale = 0.5625 # 1280px to 720px.
     @level_pos_x = 0
+    @stage = 0
 
     # Parallax background.
     @bg = Gosu::Image.new('sprites/background/colored_grass.png', tileable: true)
@@ -45,15 +46,32 @@ module Level1
     @potion_positions = [1060]
   end
 
-  def self.get_next_elevations(stage)
-    @elevation_map[clamped_stage(stage+1)]
+  # Triggered by player input.
+  def advance_stage!
+    state = GameWindow.game_state
+
+    Thread.new do
+      sleep GameWindow.advance_duration
+      state.advancing = false
+      state.input_locked = complete?
+      @stage = next_stage
+    end
+
+    state.advancing = true
+    next_elevations
   end
 
-  def self.clamped_stage(candidate_stage)
-    candidate_stage.clamp(*@elevation_map.keys.minmax_by{|k, _v| k })
+  def complete? = @stage == 6
+
+  def next_stage = clamped_stage(@stage + 1)
+
+  def next_elevations = @elevation_map[next_stage]
+
+  def clamped_stage(candidate_stage)
+    candidate_stage.clamp(*@elevation_map.keys.minmax_by { |k, _v| k })
   end
 
-  def self.update()
+  def update
     # Move the character to the right by moving the level to the left.
     @level_pos_x -= @fg_speed
     @spike_positions.map! { |x| x -= @fg_speed }
@@ -61,7 +79,7 @@ module Level1
     @bg_positions.map! { |x| x - @bg_speed }
   end
 
-  def self.draw
+  def draw
     @bg_positions.each do |x|
       @bg.draw(x, 0, ZOrder::BACKGROUND, @bg_scale, @bg_scale)
     end
