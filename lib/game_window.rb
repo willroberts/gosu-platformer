@@ -29,6 +29,10 @@ class GameWindow < Gosu::Window
     @advance_distance = 422 # Pixels between each stage (72px * 6 blocks).
     advance_speed = 4.0 # Pixels per frame.
     @advance_duration = (@advance_distance / advance_speed) / 60 # Kinematics v=d/t. Scaled by framerate.
+
+    # Music!
+    @music = Gosu::Song.new('sounds/music.mp3')
+    @music.play(looping=true)
   end
 
   def character
