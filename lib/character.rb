@@ -10,7 +10,7 @@ class Character
     @walk_anim = Gosu::Image.load_tiles('sprites/character/animations/walk.png', 128, 256)
     @walk_duration = 1.7583 # TODO: Reduce duplication with the math in Level1.
     @is_walking = false
-    #@walk_sound = Gosu::Sample.new('sounds/walk.mp3')
+    @walk_sound = Gosu::Sample.new('sounds/walk.mp3')
 
     @x = x
     @y = y
@@ -91,7 +91,7 @@ class Character
     end
 
     @is_walking = true
-    #@walk_sound.play
+    @walk_sound.play
     next_elevations = @window.level.next_elevations
 
     # Handle falling off current elevation when walking.
