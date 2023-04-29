@@ -46,17 +46,26 @@ class Level1
     @potion_positions = [1060]
   end
 
+  # Triggered by player input.
   def advance_stage!
-    @stage = clamped_stage(@stage + 1)
+    state = GameWindow.game_state
+
+    Thread.new do
+      sleep GameWindow.advance_duration
+      state.advancing = false
+      state.input_locked = complete?
+      @stage = next_stage
+    end
+
+    state.advancing = true
+    next_elevations
   end
 
-  def complete?
-    @stage == 6
-  end
+  def complete? = @stage == 6
 
-  def next_elevations
-    @elevation_map[clamped_stage(@stage + 1)]
-  end
+  def next_stage = clamped_stage(@stage + 1)
+
+  def next_elevations = @elevation_map[next_stage]
 
   def clamped_stage(candidate_stage)
     candidate_stage.clamp(*@elevation_map.keys.minmax_by { |k, _v| k })

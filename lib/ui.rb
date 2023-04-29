@@ -1,24 +1,23 @@
 # frozen_string_literal: true
 
 class UI
+  attr_reader :choices
+
   def initialize
     @hud_font = Gosu::Font.new(20)
     @big_font = Gosu::Font.new(64)
     @health_frame = Gosu::Image.new('sprites/hud/health_frame.png', tileable: false)
     @health_bar = Gosu::Image.new('sprites/hud/health_bar.png', tileable: false)
-    @window_sprite = Gosu::Image.new('sprites/hud/window.png', tileable: false)
-
+    @choice_sprite = Gosu::Image.new('sprites/hud/window.png', tileable: false)
+    @choices = [WalkCard.new, JumpCard.new, RestCard.new]
     @enable_debug_grid = false
   end
 
   def draw(game_state)
     # Parse game state.
-    stage = game_state.current_stage
-    choices = game_state.choices
     input_locked = game_state.input_locked
     player_health = game_state.player_health
     tutorial_done = game_state.tutorial_done
-    level_done = game_state.level_done
 
     # Display health bar.
     @health_frame.draw(10, 10, ZOrder::UI, 0.5, 0.5)
@@ -26,7 +25,7 @@ class UI
 
     # Tutorial window.
     unless tutorial_done
-      draw_window_sprite(x: 366, y: 266, x_scale: 0.6, y_scale: 0.6)
+      draw_choice(x: 366, y: 266, x_scale: 0.6, y_scale: 0.6)
       hud_text('Welcome to Gosu Platformer!', x: 500, y: 300)
       hud_text('Play each turn by choosing from three action cards.', x: 400, y: 360)
       hud_text('Use movement and abilities to avoid taking damage.', x: 400, y: 390)
@@ -36,26 +35,26 @@ class UI
     end
 
     # Card choices.
-    if !input_locked
+    unless input_locked
       if choices.length == 3
-        sprite_constants = {y: 40, x_scale: 0.1559, y_scale: 0.2525}
+        sprite_constants = { y: 40, x_scale: 0.1559, y_scale: 0.2525 }
 
-        draw_window_sprite(x: 400, **sprite_constants)
-        hud_text(choices[0].text, x: 400+44, y: 40+54)
+        draw_choice(x: 400, **sprite_constants)
+        hud_text(choices[0].text, x: 400 + 44, y: 40 + 54)
 
-        draw_window_sprite(x: 576, **sprite_constants)
-        hud_text(choices[1].text, x: 576+44, y: 40+54)
+        draw_choice(x: 576, **sprite_constants)
+        hud_text(choices[1].text, x: 576 + 44, y: 40 + 54)
 
-        draw_window_sprite(x: 752, **sprite_constants)
-        hud_text(choices[2].text, x: 752+44, y: 40+54)
+        draw_choice(x: 752, **sprite_constants)
+        hud_text(choices[2].text, x: 752 + 44, y: 40 + 54)
       else
         raise 'Invalid number of choices!'
       end
     end
 
     # Game over text.
-    if level_done
-      draw_window_sprite(x: 416, y: 266, x_scale: 0.5, y_scale: 0.25)
+    if GameWindow.level.complete?
+      draw_choice(x: 416, y: 266, x_scale: 0.5, y_scale: 0.25)
       @big_font.draw_text("You win!", 500, 300, ZOrder::UI, 1.0, 1.0, Gosu::Color::BLACK)
     end
 
@@ -83,7 +82,18 @@ class UI
     @hud_font.draw_text(text, x, y, ZOrder::UI, 1.0, 1.0, Gosu::Color::BLACK)
   end
 
-  def draw_window_sprite(x:, y:, x_scale:, y_scale:)
-    @window_sprite.draw(x, y, ZOrder::UI_BACKDROP, x_scale, y_scale)
+  def draw_choice(x:, y:, x_scale:, y_scale:)
+    @choice_sprite.draw(x, y, ZOrder::UI_BACKDROP, x_scale, y_scale)
+  end
+
+  def action_for_coordinates(x, y)
+    offset = 128
+    y_static = 40
+
+    if y.between?(y_static, y_static + offset)
+      return choices[0] if x.between?(400, 400 + offset)
+      return choices[1] if x.between?(576, 576 + offset)
+      return choices[2] if x.between?(752, 752 + offset)
+    end
   end
 end

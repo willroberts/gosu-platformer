@@ -36,9 +36,9 @@ class Character
   # Actions occur once per turn/stage.
   def handle_action(action)
     case action
-    when :walk then walk
-    when :jump then jump
-    when :rest then rest
+    when WalkCard then walk
+    when JumpCard then jump
+    when RestCard then rest
     else raise "unknown action! (#{action})"
     end
   end
@@ -86,12 +86,7 @@ class Character
     end
 
     @is_walking = true
-
-    next_elevations = @window.advance_stage
-    if next_elevations.nil?
-      puts 'next_elevations was nil!'
-      return # FIXME: What's causing this?
-    end
+    next_elevations = @window.level.next_elevations
 
     # Handle falling off current elevation when walking.
     if @current_elevation == 1 && !next_elevations[1]
@@ -117,11 +112,7 @@ class Character
     @jump_start_time = Time.now
     set_sprite('alienBlue_jump.png')
 
-    next_elevations = @window.advance_stage
-    if next_elevations.nil?
-      puts 'next_elevations was nil!'
-      return # FIXME: Is this still happening?
-    end
+    next_elevations = @window.level.next_elevations
 
     # Handle jumping to higher elevation.
     if @current_elevation.zero? && next_elevations[1]
