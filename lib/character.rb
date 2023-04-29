@@ -10,6 +10,7 @@ class Character
     @walk_anim = Gosu::Image.load_tiles('sprites/character/animations/walk.png', 128, 256)
     @walk_duration = 1.7583 # TODO: Reduce duplication with the math in Level1.
     @is_walking = false
+    #@walk_sound = Gosu::Sample.new('sounds/walk.mp3')
 
     @x = x
     @y = y
@@ -23,6 +24,7 @@ class Character
     @jump_start_time = nil
     @is_jumping = false
     @is_falling = false
+    @jump_sound = Gosu::Sample.new('sounds/jump.mp3')
   end
 
   def set_sprite(filename) = @sprite = Sprite.character(filename)
@@ -86,6 +88,7 @@ class Character
     end
 
     @is_walking = true
+    #@walk_sound.play
     next_elevations = @window.level.next_elevations
 
     # Handle falling off current elevation when walking.
@@ -111,6 +114,7 @@ class Character
     @is_jumping = true
     @jump_start_time = Time.now
     set_sprite('alienBlue_jump.png')
+    @jump_sound.play
 
     next_elevations = @window.level.next_elevations
 
