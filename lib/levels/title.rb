@@ -5,8 +5,8 @@ class TitleScreen
     # Parallax background.
     @bg = Gosu::Image.new('sprites/background/colored_grass.png', tileable: true)
     @bg_scale = 0.7032 # 1024px to 720px.
-    @bg_positions = (-1..64).map { |x| x * 720 } # Enough background for ~6 minutes before we scroll off-screen.
-    @bg_speed = 2.0
+    @bg_positions = (-1..64).map { |x| x * 720 } # Enough background for ~12 minutes before we scroll off-screen.
+    @bg_speed = 1.0
   end
 
   def update
