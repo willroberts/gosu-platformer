@@ -25,6 +25,9 @@ class Character
     @is_jumping = false
     @is_falling = false
     @jump_sound = Gosu::Sample.new('sounds/jump.mp3')
+
+    # Health and damage.
+    #@damage_sound = Gosu::Sample.new('sounds/damage.mp3') # TODO: Play when we take damage!
   end
 
   def set_sprite(filename) = @sprite = Sprite.character(filename)
