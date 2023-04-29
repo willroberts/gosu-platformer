@@ -65,10 +65,16 @@ class GameWindow < Gosu::Window
   end
 
   def determine_click_location(x, y)
-    return 0 if x >= 400 && x <= 400+128 && y >= 40 && y <= 40+128
-    return 1 if x >= 576 && x <= 576+128 && y >= 40 && y <= 40+128
-    return 2 if x >= 752 && x <= 752+128 && y >= 40 && y <= 40+128
-    return -1 # Nothing clicked.
+    offset = 128
+    y_static = 40
+
+    if y.between?(y_static, y_static + offset)
+      return 0 if x.between?(400, 400 + offset)
+      return 1 if x.between?(576, 576 + offset)
+      return 2 if x.between?(752, 752 + offset)
+    end
+
+    -1
   end
 
   # Triggered by player input.
@@ -77,17 +83,16 @@ class GameWindow < Gosu::Window
       sleep @advance_duration
       game_state.advancing = false
       game_state.input_locked = false
-      game_state.current_stage += 1
+      current_level.advance_stage!
 
-      # TODO: Find a better place to put this.
-      if game_state.current_stage == 6
+      if current_level.complete?
         game_state.input_locked = true
         game_state.level_done = true
       end
     end
-    game_state.advancing = true
 
-    current_level.get_next_elevations(game_state.current_stage)
+    game_state.advancing = true
+    current_level.next_elevations
   end
 
   # Triggered by player input.

@@ -98,9 +98,7 @@ class Character
       delay_fall
     elsif @current_elevation == 2 && !next_elevations[2]
       delay_fall
-      unless next_elevations[1]
-        delay_fall
-      end
+      delay_fall unless next_elevations[1]
     end
   end
 
@@ -159,7 +157,6 @@ class Character
   end
 
   ### Draw Loop ###
-
   def draw
     # TODO: Implement damage FX by using (Gosu.milliseconds % 100) to selectively draw the character, creating a "flashing" effect.
     @sprite.draw_rot(x, y, ZOrder::CHARACTER, 0, 0.5, 0.5, x_scale, y_scale)

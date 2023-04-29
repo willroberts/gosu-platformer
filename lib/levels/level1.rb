@@ -5,6 +5,7 @@ class Level1
     @level_sprite = Gosu::Image.new('sprites/levels/level1.png', tileable: true)
     @level_scale = 0.5625 # 1280px to 720px.
     @level_pos_x = 0
+    @stage = 0
 
     # Parallax background.
     @bg = Gosu::Image.new('sprites/background/colored_grass.png', tileable: true)
@@ -45,15 +46,23 @@ class Level1
     @potion_positions = [1060]
   end
 
-  def get_next_elevations(stage)
-    @elevation_map[clamped_stage(stage+1)]
+  def advance_stage!
+    @stage = clamped_stage(@stage + 1)
+  end
+
+  def complete?
+    @stage == 6
+  end
+
+  def next_elevations
+    @elevation_map[clamped_stage(@stage + 1)]
   end
 
   def clamped_stage(candidate_stage)
-    candidate_stage.clamp(*@elevation_map.keys.minmax_by{|k, _v| k })
+    candidate_stage.clamp(*@elevation_map.keys.minmax_by { |k, _v| k })
   end
 
-  def update()
+  def update
     # Move the character to the right by moving the level to the left.
     @level_pos_x -= @fg_speed
     @spike_positions.map! { |x| x -= @fg_speed }
