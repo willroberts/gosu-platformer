@@ -58,7 +58,7 @@ class Character
     spikes.each do |coords|
       x, y = coords
       if !@invulnerable
-        if overlaps(x, y, x+96, y+96)
+        if overlaps(x, y+32, x+96, y+64)
           # Take damage.
           @health -= 1 unless @health <= 0
           @damage_sound.play(volume=0.5)
