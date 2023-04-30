@@ -46,7 +46,7 @@ class UI
         hud_text(choices[1].text, x: 576 + 44, y: 40 + 54)
 
         draw_choice(x: 752, **sprite_constants)
-        hud_text(choices[2].text, x: 752 + 44, y: 40 + 54)
+        hud_text(choices[2].text, x: 722 + 44, y: 40 + 54)
       else
         raise 'Invalid number of choices!'
       end
