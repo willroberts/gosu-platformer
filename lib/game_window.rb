@@ -37,6 +37,8 @@ class GameWindow < Gosu::Window
     @music.play(looping = true)
   end
 
+  def self.advance_duration = instance.advance_duration
+  def self.level = instance.level
   def self.root_dir = instance.root_dir
 
   def character

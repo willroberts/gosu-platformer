@@ -66,16 +66,16 @@ class Level1
   def advance_stage!
     Thread.new do
       sleep GameWindow.advance_duration
-      @window.advancing = false
+      window.advancing = false
       Thread.new do
         # Unlock input a short time after advancing completes.
         sleep 0.25
-        @window.input_locked = complete?
+        window.input_locked = complete?
       end
-      @stage = next_stage unless state.game_over # Prevent advancing stage when dead.
+      @stage = next_stage unless window.character.dead # Prevent advancing stage when dead.
     end
 
-    @window.advancing = true
+    window.advancing = true
     next_elevations
   end
 
