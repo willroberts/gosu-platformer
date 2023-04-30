@@ -64,7 +64,11 @@ class Level1
     Thread.new do
       sleep GameWindow.advance_duration
       state.advancing = false
-      state.input_locked = complete?
+      Thread.new do
+        # Unlock input a short time after advancing completes.
+        sleep 0.5
+        state.input_locked = complete?
+      end
       @stage = next_stage if !state.failure # Prevent advancing stage when dead.
     end
 

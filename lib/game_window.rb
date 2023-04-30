@@ -93,7 +93,7 @@ class GameWindow < Gosu::Window
       card = ui.action_for_coordinates(self.mouse_x, self.mouse_y)
       return if level.complete? || card.nil?
 
-      game_state.input_locked = true
+      game_state.input_locked = true # Unlocked when stage ends.
       character.perform(card)
       level.advance_stage! unless card.is_a?(ConcentrateCard)
     end
