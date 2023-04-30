@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Character
-  attr_reader :x, :y, :sprite, :x_scale, :y_scale, :health
+  attr_reader :x, :y, :sprite, :x_scale, :y_scale, :health, :dead
 
   def initialize(x, y)
     @window = GameWindow.instance
@@ -29,6 +29,7 @@ class Character
 
     # Health and damage.
     @health = 5
+    @dead = false
     @invulnerable = false
     @damage_sound = Gosu::Sample.new('sounds/damage.mp3')
   end
@@ -84,6 +85,7 @@ class Character
   def detect_death
     if @health <= 0
       @invulnerable = true
+      @dead = true
       return true
     end
     false

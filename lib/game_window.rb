@@ -11,23 +11,27 @@ end
 class GameWindow < Gosu::Window
   include Singleton
 
-  attr_reader :game_state, :root_dir, :level, :advance_duration, :ui, :character
+  attr_reader :root_dir, :level, :advance_duration, :ui, :character, :tutorial_done
+  attr_accessor :advancing, :input_locked
 
   def self.root_dir = instance.root_dir
   def self.level = instance.level
   def self.advance_duration = instance.advance_duration
-  def self.game_state = instance.game_state
 
   def initialize
     super 1280, 720, fullscreen: false
     self.caption = 'Gosu Platformer'
 
-    @game_state = GameState.new
     @root_dir = File.dirname(File.expand_path(__FILE__), 2)
     @title_screen = TitleScreen.new
     @level = Level1.new
     @ui = UI.new
 
+    @input_locked = false
+    @on_title_screen = true
+    @tutorial_done = false
+
+    @advancing = false
     @advance_distance = 426 # Pixels between each stage (72px * 6 blocks + buffer).
     advance_speed = 4.0 # Pixels per frame.
     @advance_duration = (@advance_distance / advance_speed) / 60 # Kinematics: v=d/t. Scaled by framerate.
@@ -48,14 +52,13 @@ class GameWindow < Gosu::Window
     handle_input
 
     # Handle title screen.
-    @title_screen.update if game_state.on_title_screen
+    @title_screen.update if on_title_screen
 
     # Process game over states (both win and loss).
-    game_state.game_over = character.detect_death
-    game_state.input_locked = true if game_state.game_over
+    input_locked = true if character.dead
 
     # Process turns.
-    level.update if game_state.advancing && !game_state.on_title_screen && !game_state.game_over
+    level.update if advancing && !on_title_screen && !character.dead
 
     # Update player interactions every frame.
     character.detect_collision
@@ -66,30 +69,30 @@ class GameWindow < Gosu::Window
     close if Gosu.button_down?(Gosu::KB_ESCAPE)
     binding.pry if Gosu.button_down?(Gosu::KB_P)
 
-    if game_state.on_title_screen
+    if on_title_screen
       if Gosu.button_down?(Gosu::MS_LEFT)
         Thread.new do
           # Prevent a single click from spanning multiple frames.
           sleep 0.250
-          game_state.on_title_screen = false
+          on_title_screen = false
         end
       end
       return
     end
 
     # Handle tutorial click.
-    if !game_state.tutorial_done && Gosu.button_down?(Gosu::MS_LEFT)
-      game_state.tutorial_done = true
-      game_state.input_locked = false
+    if !tutorial_done && Gosu.button_down?(Gosu::MS_LEFT)
+      tutorial_done = true
+      input_locked = false
     end
 
-    return if game_state.input_locked
+    return if input_locked
 
     if Gosu.button_down?(Gosu::MS_LEFT)
       card = ui.action_for_coordinates(mouse_x, mouse_y)
       return if level.complete? || card.nil?
 
-      game_state.input_locked = true # Unlocked when stage ends.
+      input_locked = true # Unlocked when stage ends.
       character.handle_action(card)
       level.advance_stage! unless card.is_a?(ConcentrateCard)
     end
@@ -99,19 +102,19 @@ class GameWindow < Gosu::Window
   def skip_stage
     Thread.new do
       sleep 0.75
-      game_state.input_locked = false
+      input_locked = false
     end
 
-    game_state.input_locked = true
+    input_locked = true
   end
 
   def draw
-    if game_state.on_title_screen
+    if on_title_screen
       @title_screen.draw
     else
       level.draw
       character.draw
-      ui.draw game_state
+      ui.draw
     end
   end
 end

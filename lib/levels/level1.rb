@@ -4,6 +4,8 @@ class Level1
   attr_reader :potion_positions, :spike_positions
 
   def initialize
+    @window = GameWindow.instance
+
     @level_sprite = Gosu::Image.new('sprites/levels/level1.png', tileable: true)
     @level_scale = 0.5625 # 1280px to 720px.
     @level_pos_x = 0
@@ -60,20 +62,18 @@ class Level1
 
   # Triggered by player input.
   def advance_stage!
-    state = GameWindow.game_state
-
     Thread.new do
       sleep GameWindow.advance_duration
-      state.advancing = false
+      @window.advancing = false
       Thread.new do
         # Unlock input a short time after advancing completes.
         sleep 0.25
-        state.input_locked = complete?
+        @window.input_locked = complete?
       end
       @stage = next_stage unless state.game_over # Prevent advancing stage when dead.
     end
 
-    state.advancing = true
+    @window.advancing = true
     next_elevations
   end
 
