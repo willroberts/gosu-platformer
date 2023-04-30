@@ -55,9 +55,11 @@ class Character
   # Collision is performed via jank. Check bounds of sprites for spikes and potions.
   def detect_collision
     spikes = GameWindow.instance.level.spike_positions
-    spikes.each do |spike|
-      x, y = spike
-      if overlaps(x, x+96, y, y+96)
+    spikes.each do |coords|
+      x, y = coords
+      if !@invulnerable && overlaps(x, x+96, y, y+96)
+        puts 'Spike collision'
+
         @health -= 1
         @damage_sound.play(volume=0.5)
 
@@ -71,9 +73,11 @@ class Character
     end
 
     potions = GameWindow.instance.level.potion_positions
-    potions.each.with_index do |pot, i|
-      x, y = pot
+    potions.each.with_index do |coords, i|
+      x, y = coords
       if overlaps(x, x+96, y, y+96)
+        puts 'Potion collision'
+
         # Gain 1 HP.
         @health += 1
 
@@ -83,6 +87,8 @@ class Character
     end
   end
 
+  # Detect character overlap with the given sprite bounds.
+  # FIXME: This seems to flip between true/false on some frames where we *are* overlapping.
   def overlaps(x1, y1, x2, y2)
     left_edge = @x
     right_edge = @x + 64
@@ -93,12 +99,8 @@ class Character
     # 1. The right side of our bounding box exceeds the left side of the overlapped sprite.
     # 2. The left side of our bounding box exceeds the right side of the overlapped sprite.
     # 3. Any part of our bounding box is vertically aligned with any part of the overlapped sprite.
-    if right_edge >= x1 and left_edge <= x2
-      puts 'Overlapping something horizontally!'
-      if false # try @y>=y1 and @y+128<=y2 ?
-        puts 'Overlapping something vertically! COLLISION!'
-        true
-      end
+    if right_edge >= x1 && left_edge <= x2 && bottom_edge >= y1 && top_edge <= y2
+      true
     end
 
     false
