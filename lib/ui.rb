@@ -9,7 +9,7 @@ class UI
     @health_frame = Gosu::Image.new('sprites/hud/health_frame.png', tileable: false)
     @health_bar = Gosu::Image.new('sprites/hud/health_bar.png', tileable: false)
     @choice_sprite = Gosu::Image.new('sprites/hud/window.png', tileable: false)
-    @choices = [WalkCard.new, JumpCard.new, RestCard.new]
+    @choices = [WalkCard.new, JumpCard.new, ConcentrateCard.new]
     @enable_debug_grid = false
   end
 

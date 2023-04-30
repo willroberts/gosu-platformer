@@ -46,7 +46,7 @@ class Character
     case action
     when WalkCard then walk
     when JumpCard then jump
-    when RestCard then concentrate
+    when ConcentrateCard then concentrate
     else raise "unknown action! (#{action})"
     end
   end
