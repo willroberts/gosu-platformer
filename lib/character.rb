@@ -56,8 +56,8 @@ class Character
   def detect_collision
     spikes = GameWindow.instance.level.spike_positions
     spikes.each do |spike|
-      collided = false
-      if collided
+      x, y = spike
+      if overlaps(x, x+96, y, y+96)
         @health -= 1
         @damage_sound.play(volume=0.5)
 
@@ -72,8 +72,8 @@ class Character
 
     potions = GameWindow.instance.level.potion_positions
     potions.each.with_index do |pot, i|
-      collided = false
-      if collided
+      x, y = pot
+      if overlaps(x, x+96, y, y+96)
         # Gain 1 HP.
         @health += 1
 
@@ -81,6 +81,16 @@ class Character
         GameWindow.instance.level.remove_potion(i)
       end
     end
+  end
+
+  def overlaps(x1, y1, x2, y2)
+    # FIXME: This is big broken. Needs more brain energy.
+    # Are we within the X bounds?
+    # [   <  ]   >
+    # x1  x2 x1+123 x2+123
+    # Are we within the Y bounds?
+    true if @x >= x1 and @x + 64 <= x2 and @y >= y1 and @y + 128 <= y2
+    false
   end
 
   # Locomotion is processed every frame.
