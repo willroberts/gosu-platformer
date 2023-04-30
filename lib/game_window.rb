@@ -51,6 +51,7 @@ class GameWindow < Gosu::Window
 
   def handle_input
     close if Gosu.button_down?(Gosu::KB_ESCAPE)
+    require 'pry'; binding.pry if Gosu.button_down?(Gosu::KB_P)
 
     if game_state.on_title_screen
       if Gosu.button_down?(Gosu::MS_LEFT)
@@ -74,6 +75,7 @@ class GameWindow < Gosu::Window
     if Gosu.button_down?(Gosu::MS_LEFT)
       card = ui.action_for_coordinates(self.mouse_x, self.mouse_y)
       return unless card # Nothing clicked.
+      return if level.complete?
 
       game_state.input_locked = true
       character.perform(card)
