@@ -66,7 +66,7 @@ class Character
           # Prevent taking damage for the time it takes to walk through the spikes.
           @invulnerable = true
           Thread.new do
-            sleep 1
+            sleep 0.85 # Just enough time to avoid taking damage twice from one spike.
             @invulnerable = false
           end
         end
