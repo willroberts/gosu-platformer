@@ -70,7 +70,7 @@ class Level1
         sleep 0.25
         state.input_locked = complete?
       end
-      @stage = next_stage if !state.failure # Prevent advancing stage when dead.
+      @stage = next_stage if !state.game_over # Prevent advancing stage when dead.
     end
 
     state.advancing = true
