@@ -74,7 +74,7 @@ class Level1
         sleep 0.25
         window.input_locked = complete?
       end
-      @stage = next_stage unless window.player.dead # Prevent advancing stage when dead.
+      @stage = next_stage unless window.player.dead
     end
 
     window.advancing = true
