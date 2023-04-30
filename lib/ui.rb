@@ -52,10 +52,11 @@ class UI
       end
     end
 
-    # Game over text.
+    # Game Over text.
     if GameWindow.level.complete?
       draw_choice(x: 416, y: 266, x_scale: 0.5, y_scale: 0.25)
       @big_font.draw_text("You win!", 500, 300, ZOrder::UI, 1.0, 1.0, Gosu::Color::BLACK)
+      game_state.input_locked = true # Hide choices.
     end
 
     # Level debug grid.
