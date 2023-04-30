@@ -24,13 +24,13 @@ class UI
 
     # Tutorial window.
     unless window.tutorial_done
-      draw_choice(x: 366, y: 266, x_scale: 0.6, y_scale: 0.6)
-      hud_text('Welcome to Gosu Platformer!', x: 490, y: 300)
-      hud_text('Play each turn by choosing from three action cards.', x: 400, y: 360)
-      hud_text('Use movement and abilities to avoid taking damage.', x: 400, y: 390)
-      hud_text('Heal yourself by collecting potions.', x: 400, y: 420)
-      hud_text('Make it to the end of the level to win!', x: 400, y: 450)
-      hud_text('Click anywhere to continue.', x: 500, y: 510)
+      draw_choice(x: 396, y: 266, x_scale: 0.6, y_scale: 0.6)
+      hud_text('Welcome to the game!', x: 550, y: 310)
+      hud_text('Play each turn by choosing from three action cards.', x: 430, y: 360)
+      hud_text('Use movement and abilities to avoid taking damage.', x: 430, y: 390)
+      hud_text('Heal yourself by collecting potions.', x: 430, y: 420)
+      hud_text('Make it to the end of the level to win!', x: 430, y: 450)
+      hud_text('Click anywhere to continue.', x: 530, y: 510)
     end
 
     # Card choices.
