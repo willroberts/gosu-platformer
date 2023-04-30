@@ -31,22 +31,29 @@ class Level1
     @potion_sprite = Gosu::Image.new('sprites/items/potionRed.png', tileable: false)
     @potion_positions = [
       [1060, 570],
-      [1460, 570],
+      [1920, 136],
     ]
 
     # Floor spikes!
     @spike_sprite = Gosu::Image.new('sprites/environment/spikes.png', tileable: false)
     @spike_positions = [
+      # Stage 1.
       [510, 554],
-      [1370, 338],
-      [1620, 338],
+      [750, 338],
+      # Stage 3.
+      [1380, 338],
+      [1610, 338],
+      # Stage 4.
       [1660, 554],
       [1760, 554],
+      [1810, 120],
+      [2040, 120],
       [2060, 554],
       [2160, 554],
-      [2230, 338],
+      # Stage 5.
+      [2240, 338],
       [2480, 554],
-      [2480, 338],
+      [2470, 338],
     ]
   end
 
