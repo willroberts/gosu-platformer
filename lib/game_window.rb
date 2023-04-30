@@ -37,6 +37,8 @@ class GameWindow < Gosu::Window
     @music.play(looping = true)
   end
 
+  def self.root_dir = instance.root_dir
+
   def character
     # Starting at x:252 means we can consistently advance to the exact center of each stage.
     # The floor is at y:648, but we subtract 128px for the character sprite.
@@ -48,13 +50,13 @@ class GameWindow < Gosu::Window
     handle_input
 
     # Handle title screen.
-    @title_screen.update if on_title_screen
+    @title_screen.update if @on_title_screen
 
     # Process game over states (both win and loss).
     input_locked = true if character.dead
 
     # Process turns.
-    level.update if advancing && !on_title_screen && !character.dead
+    level.update if advancing && !@on_title_screen && !character.dead
 
     # Update player interactions every frame.
     character.detect_collision
@@ -65,12 +67,12 @@ class GameWindow < Gosu::Window
     close if Gosu.button_down?(Gosu::KB_ESCAPE)
     binding.pry if Gosu.button_down?(Gosu::KB_P)
 
-    if on_title_screen
+    if @on_title_screen
       if Gosu.button_down?(Gosu::MS_LEFT)
         Thread.new do
           # Prevent a single click from spanning multiple frames.
           sleep 0.250
-          on_title_screen = false
+          @on_title_screen = false
         end
       end
       return
@@ -105,7 +107,7 @@ class GameWindow < Gosu::Window
   end
 
   def draw
-    if on_title_screen
+    if @on_title_screen
       @title_screen.draw
     else
       level.draw
