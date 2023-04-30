@@ -26,7 +26,7 @@ class UI
     # Tutorial window.
     unless tutorial_done
       draw_choice(x: 366, y: 266, x_scale: 0.6, y_scale: 0.6)
-      hud_text('Welcome to Gosu Platformer!', x: 500, y: 300)
+      hud_text('Welcome to Gosu Platformer!', x: 490, y: 300)
       hud_text('Play each turn by choosing from three action cards.', x: 400, y: 360)
       hud_text('Use movement and abilities to avoid taking damage.', x: 400, y: 390)
       hud_text('Heal yourself by collecting potions.', x: 400, y: 420)

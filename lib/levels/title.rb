@@ -20,8 +20,8 @@ class TitleScreen
       @bg.draw(x, 0, ZOrder::BACKGROUND, @bg_scale, @bg_scale)
     end
 
-    @title_font.draw_text('Gosu Platformer', 420, 200, ZOrder::UI, 1.0, 1.0, Gosu::Color::BLACK)
-    @sub_font.draw_text('By Tyler and Will', 520, 350, ZOrder::UI, 1.0, 1.0, Gosu::Color::BLACK)
-    @sub_font.draw_text('Click anywhere to play', 480, 500, ZOrder::UI, 1.0, 1.0, Gosu::Color::BLACK)
+    @title_font.draw_text('Gosu Platformer', 430, 200, ZOrder::UI, 1.0, 1.0, Gosu::Color::BLACK)
+    @sub_font.draw_text('By Tyler and Will', 530, 350, ZOrder::UI, 1.0, 1.0, Gosu::Color::BLACK)
+    @sub_font.draw_text('Click anywhere to play', 500, 500, ZOrder::UI, 1.0, 1.0, Gosu::Color::BLACK)
   end
 end
