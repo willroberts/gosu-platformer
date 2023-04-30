@@ -30,13 +30,23 @@ class Level1
     # Potions!
     @potion_sprite = Gosu::Image.new('sprites/items/potionRed.png', tileable: false)
     @potion_positions = [
-      [1060, 570]
+      [1060, 570],
+      [1460, 570],
     ]
 
     # Floor spikes!
     @spike_sprite = Gosu::Image.new('sprites/environment/spikes.png', tileable: false)
     @spike_positions = [
-      [510, 554]
+      [510, 554],
+      [1370, 338],
+      [1620, 338],
+      [1660, 554],
+      [1760, 554],
+      [2060, 554],
+      [2160, 554],
+      [2230, 338],
+      [2480, 554],
+      [2480, 338],
     ]
   end
 
@@ -48,7 +58,7 @@ class Level1
       sleep GameWindow.advance_duration
       state.advancing = false
       state.input_locked = complete?
-      @stage = next_stage
+      @stage = next_stage if !state.failure # Prevent advancing stage when dead.
     end
 
     state.advancing = true
@@ -92,6 +102,7 @@ class Level1
     @level_sprite.draw(@level_pos_x, 0, ZOrder::LEVEL, @level_scale, @level_scale)
     @spike_positions.each do |coords|
       x, y = coords
+      #Gosu.draw_rect(x, y, 96, 96, Gosu::Color::RED) # Debug box for collision.
       @spike_sprite.draw(x, y, ZOrder::LEVEL, 0.75, 0.75)
     end
     @potion_positions.each do |coords|
