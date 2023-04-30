@@ -56,24 +56,28 @@ class Level1
       [2470, 338]
       # Example solution: Jump, Walk, Walk, Walk, Jump (grab potion above), Walk.
     ]
+
+    @enable_collision_debug = false
+  end
+
+  def window
+    GameWindow.instance
   end
 
   # Triggered by player input.
   def advance_stage!
-    state = GameWindow.game_state
-
     Thread.new do
       sleep GameWindow.advance_duration
-      state.advancing = false
+      window.advancing = false
       Thread.new do
         # Unlock input a short time after advancing completes.
         sleep 0.25
-        state.input_locked = complete?
+        window.input_locked = complete?
       end
-      @stage = next_stage unless state.game_over # Prevent advancing stage when dead.
+      @stage = next_stage unless window.player.dead
     end
 
-    state.advancing = true
+    window.advancing = true
     next_elevations
   end
 
@@ -88,7 +92,7 @@ class Level1
   end
 
   def update
-    # Move the character to the right by moving the level to the left.
+    # Move the player to the right by moving the level to the left.
     @level_pos_x -= @fg_speed
     @spike_positions.each.with_index do |coords, i|
       x, y = coords
@@ -114,7 +118,7 @@ class Level1
     @level_sprite.draw(@level_pos_x, 0, ZOrder::LEVEL, @level_scale, @level_scale)
     @spike_positions.each do |coords|
       x, y = coords
-      # Gosu.draw_rect(x, y+32, 96, 64, Gosu::Color::RED) # Debug box for collision.
+      Gosu.draw_rect(x, y + 32, 96, 64, Gosu::Color::RED) if @enable_collision_debug
       @spike_sprite.draw(x, y, ZOrder::LEVEL, 0.75, 0.75)
     end
     @potion_positions.each do |coords|

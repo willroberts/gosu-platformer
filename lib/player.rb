@@ -1,11 +1,9 @@
 # frozen_string_literal: true
 
-class Character
-  attr_reader :x, :y, :sprite, :x_scale, :y_scale, :health
+class Player
+  attr_reader :dead, :health
 
   def initialize(x, y)
-    @window = GameWindow.instance
-
     @x = x
     @y = y
     @x_scale = 1
@@ -29,17 +27,18 @@ class Character
 
     # Health and damage.
     @health = 5
+    @dead = false
     @invulnerable = false
     @damage_sound = Gosu::Sample.new('sounds/damage.mp3')
+
+    @enable_collision_debug = false
+  end
+
+  def window
+    GameWindow.instance
   end
 
   def set_sprite(filename) = @sprite = Sprite.character(filename)
-
-  ### Update Loop ###
-
-  def perform(action)
-    handle_action(action)
-  end
 
   # Actions occur once per turn/stage.
   def handle_action(action)
@@ -53,7 +52,7 @@ class Character
 
   # Collision is performed via jank. Check bounds of sprites for spikes and potions.
   def detect_collision
-    spikes = @window.level.spike_positions
+    spikes = window.level.spike_positions
     spikes.each do |coords|
       x, y = coords
       next if @invulnerable
@@ -72,7 +71,7 @@ class Character
       end
     end
 
-    potions = @window.level.potion_positions
+    potions = window.level.potion_positions
     potions.each.with_index do |coords, i|
       x, y = coords
       if overlaps(x, y, x + 96, y + 96)
@@ -80,7 +79,7 @@ class Character
         @health += 1 unless @health >= 5
 
         # Remove the potion from the level
-        @window.level.remove_potion(i)
+        window.level.remove_potion(i)
       end
     end
   end
@@ -88,14 +87,15 @@ class Character
   def detect_death
     if @health <= 0
       @invulnerable = true
+      @dead = true
       return true
     end
     false
   end
 
-  # Detect character overlap with the given sprite bounds.
+  # Detect player overlap with the given sprite bounds.
   def overlaps(x1, y1, x2, y2)
-    # Determine character bounds.
+    # Determine player bounds.
     left_edge = @x - 56
     right_edge = @x + 56
     top_edge = @y - 24
@@ -129,7 +129,7 @@ class Character
           Thread.new do
             # This value may need to be longer if traversing from higher->lower elevatioon (~0.6s)
             jitter = 0.4
-            sleep(@window.advance_duration / 2 - jitter)
+            sleep(window.advance_duration / 2 - jitter)
             @is_walking = false
             reset_sprite
           end
@@ -142,14 +142,14 @@ class Character
     return if @is_walking || @is_falling || @is_jumping
 
     Thread.new do
-      sleep @window.advance_duration
+      sleep window.advance_duration
       @is_walking = false
       reset_sprite
     end
 
     @is_walking = true
     @walk_sound.play
-    next_elevations = @window.level.next_elevations
+    next_elevations = window.level.next_elevations
 
     # Handle falling off current elevation when walking.
     if @current_elevation == 1 && !next_elevations[1]
@@ -162,7 +162,7 @@ class Character
 
   def delay_fall
     Thread.new do
-      sleep(@window.advance_duration / 2 + 0.1)
+      sleep(window.advance_duration / 2 + 0.1)
       @current_elevation -= 1
       @is_falling = true
     end
@@ -176,7 +176,7 @@ class Character
     set_sprite('alienBlue_jump.png')
     @jump_sound.play
 
-    next_elevations = @window.level.next_elevations
+    next_elevations = window.level.next_elevations
 
     # Handle jumping to higher elevation.
     if @current_elevation.zero? && next_elevations[1]
@@ -196,7 +196,7 @@ class Character
 
   def concentrate
     @concentrate_sound.play
-    @window.skip_stage
+    window.skip_stage
   end
 
   # Calculate vertical velocity based on jumping and falling durations.
@@ -211,12 +211,11 @@ class Character
     set_sprite('alienBlue_stand.png')
   end
 
-  ### Draw Loop ###
   def draw
-    # Make the character sprite flash when damage was taken.
+    # Make the player sprite flash when damage was taken.
     return if @invulnerable && (Gosu.milliseconds / 100).even?
 
-    # Gosu.draw_rect(x-56, y-24, 112, 152, Gosu::Color::BLUE) # Debug box for collision.
-    @sprite.draw_rot(x, y, ZOrder::CHARACTER, 0, 0.5, 0.5, x_scale, y_scale)
+    Gosu.draw_rect(x - 56, y - 24, 112, 152, Gosu::Color::BLUE) if @enable_collision_debug
+    @sprite.draw_rot(@x, @y, ZOrder::CHARACTER, 0, 0.5, 0.5, @x_scale, @y_scale)
   end
 end

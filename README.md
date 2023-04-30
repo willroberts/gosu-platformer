@@ -11,6 +11,7 @@ This game is a one-level concept with three cards to choose from. The ultimate
 goal would be to have a variety of levels, cards, and enemies.
 
 There are other features which are partially implemented but not complete:
+- Quickly restarting the level by clicking
 - Hover descriptions for cards
 - Graphical icons for cards
 

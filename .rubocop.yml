@@ -2,6 +2,10 @@ Metrics/MethodLength:
   Enabled: false
   Why: '10 lines is a silly limitation'
 
+Metrics/ClassLength:
+  Enabled: false
+  Why: '100 lines is similarly too small'
+
 Naming/MethodParameterName:
   Enabled: false
   Why: 'I wanna name variables x and y'
@@ -13,3 +17,19 @@ Style/Documentation:
 Style/GuardClause:
   Enabled: false
   Why: 'Changing if { ... } to return unless is kinda annoying'
+
+Metrics/CyclomaticComplexity:
+  Enabled: false
+  Why: 'Not a concern for this small game'
+
+Metrics/PerceivedComplexity:
+  Enabled: false
+  Why: 'Not a concern for this small game'
+
+Metrics/AbcSize:
+  Enabled: false
+  Why: 'Not a concern for this small game'
+
+Lint/Debugger:
+  Enabled: false
+  Why: 'We use pry'
