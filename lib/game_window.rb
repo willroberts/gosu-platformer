@@ -14,10 +14,6 @@ class GameWindow < Gosu::Window
   attr_reader :root_dir, :level, :advance_duration, :ui, :character, :tutorial_done
   attr_accessor :advancing, :input_locked
 
-  def self.root_dir = instance.root_dir
-  def self.level = instance.level
-  def self.advance_duration = instance.advance_duration
-
   def initialize
     super 1280, 720, fullscreen: false
     self.caption = 'Gosu Platformer'

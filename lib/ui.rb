@@ -4,7 +4,6 @@ class UI
   attr_reader :choices
 
   def initialize
-    @window = GameWindow.instance
     @hud_font = Gosu::Font.new(20)
     @big_font = Gosu::Font.new(64)
     @health_frame = Gosu::Image.new('sprites/hud/health_frame.png', tileable: false)
@@ -12,6 +11,10 @@ class UI
     @choice_sprite = Gosu::Image.new('sprites/hud/window.png', tileable: false)
     @choices = [WalkCard.new, JumpCard.new, ConcentrateCard.new]
     @enable_debug_grid = false
+  end
+
+  def window
+    GameWindow.instance
   end
 
   def draw

@@ -4,8 +4,6 @@ class Level1
   attr_reader :potion_positions, :spike_positions
 
   def initialize
-    @window = GameWindow.instance
-
     @level_sprite = Gosu::Image.new('sprites/levels/level1.png', tileable: true)
     @level_scale = 0.5625 # 1280px to 720px.
     @level_pos_x = 0
@@ -58,6 +56,10 @@ class Level1
       [2470, 338]
       # Example solution: Jump, Walk, Walk, Walk, Jump (grab potion above), Walk.
     ]
+  end
+
+  def window
+    GameWindow.instance
   end
 
   # Triggered by player input.

@@ -4,8 +4,6 @@ class Character
   attr_reader :x, :y, :sprite, :x_scale, :y_scale, :health, :dead
 
   def initialize(x, y)
-    @window = GameWindow.instance
-
     @x = x
     @y = y
     @x_scale = 1
@@ -32,6 +30,10 @@ class Character
     @dead = false
     @invulnerable = false
     @damage_sound = Gosu::Sample.new('sounds/damage.mp3')
+  end
+
+  def window
+    GameWindow.instance
   end
 
   def set_sprite(filename) = @sprite = Sprite.character(filename)
