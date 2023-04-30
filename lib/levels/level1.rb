@@ -81,6 +81,10 @@ class Level1
     @bg_positions.map! { |x| x - @bg_speed }
   end
 
+  def remove_potion(i)
+    @potion_positions.delete_at(i)
+  end
+
   def draw
     @bg_positions.each do |x|
       @bg.draw(x, 0, ZOrder::BACKGROUND, @bg_scale, @bg_scale)

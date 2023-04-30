@@ -30,7 +30,8 @@ class Character
 
     # Health and damage.
     @health = 5
-    #@damage_sound = Gosu::Sample.new('sounds/damage.mp3') # TODO: Play when we take damage!
+    @invulnerable = false
+    @damage_sound = Gosu::Sample.new('sounds/damage.mp3')
   end
 
   def set_sprite(filename) = @sprite = Sprite.character(filename)
@@ -48,6 +49,37 @@ class Character
     when JumpCard then jump
     when ConcentrateCard then concentrate
     else raise "unknown action! (#{action})"
+    end
+  end
+
+  # Collision is performed via jank. Check bounds of sprites for spikes and potions.
+  def detect_collision
+    spikes = GameWindow.instance.level.spike_positions
+    spikes.each do |spike|
+      collided = false
+      if collided
+        @health -= 1
+        @damage_sound.play(volume=0.5)
+
+        # Prevent taking damage for the time it takes to walk through the spikes.
+        @invulnerable = true
+        Thread.new do
+          sleep 0.250
+          @invulnerable = false
+        end
+      end
+    end
+
+    potions = GameWindow.instance.level.potion_positions
+    potions.each.with_index do |pot, i|
+      collided = false
+      if collided
+        # Gain 1 HP.
+        @health += 1
+
+        # Remove the potion from the level
+        GameWindow.instance.level.remove_potion(i)
+      end
     end
   end
 
