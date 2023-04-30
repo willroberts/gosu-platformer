@@ -55,7 +55,8 @@ class GameWindow < Gosu::Window
     @title_screen.update if @on_title_screen
 
     # Process game over states (both win and loss).
-    input_locked = true if character.dead
+    character.detect_death
+    @input_locked = true if character.dead
 
     # Process turns.
     level.update if advancing && !@on_title_screen && !character.dead
@@ -81,18 +82,18 @@ class GameWindow < Gosu::Window
     end
 
     # Handle tutorial click.
-    if !tutorial_done && Gosu.button_down?(Gosu::MS_LEFT)
-      tutorial_done = true
-      input_locked = false
+    if !@tutorial_done && Gosu.button_down?(Gosu::MS_LEFT)
+      @tutorial_done = true
+      @input_locked = false
     end
 
-    return if input_locked
+    return if @input_locked
 
     if Gosu.button_down?(Gosu::MS_LEFT)
       card = ui.action_for_coordinates(mouse_x, mouse_y)
       return if level.complete? || card.nil?
 
-      input_locked = true # Unlocked when stage ends.
+      @input_locked = true # Unlocked when stage ends.
       character.handle_action(card)
       level.advance_stage! unless card.is_a?(ConcentrateCard)
     end
@@ -102,10 +103,10 @@ class GameWindow < Gosu::Window
   def skip_stage
     Thread.new do
       sleep 0.75
-      input_locked = false
+      @input_locked = false
     end
 
-    input_locked = true
+    @input_locked = true
   end
 
   def draw
