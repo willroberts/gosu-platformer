@@ -215,7 +215,7 @@ class Player
     # Make the player sprite flash when damage was taken.
     return if @invulnerable && (Gosu.milliseconds / 100).even?
 
-    Gosu.draw_rect(x-56, y-24, 112, 152, Gosu::Color::BLUE) if @enable_collision_debug
+    Gosu.draw_rect(x - 56, y - 24, 112, 152, Gosu::Color::BLUE) if @enable_collision_debug
     @sprite.draw_rot(@x, @y, ZOrder::CHARACTER, 0, 0.5, 0.5, @x_scale, @y_scale)
   end
 end
