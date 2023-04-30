@@ -6,7 +6,7 @@ require 'forwardable'
 class GameState
   extend Forwardable
   def_delegators :@state, :[], :[]=
-  attr_accessor :current_stage, :choices, :input_locked, :advancing, :tutorial_done, :on_title_screen
+  attr_accessor :current_stage, :choices, :input_locked, :advancing, :tutorial_done, :on_title_screen, :success, :failure
 
   def self.from_savefile(savefile_path)
     parsed = JSON.parse(savefile_path)
@@ -22,5 +22,8 @@ class GameState
     @advancing = false
     @on_title_screen = true
     @tutorial_done = false # Starts the game.
+
+    @success = false
+    @failure = false
   end
 end
