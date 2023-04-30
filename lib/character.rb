@@ -37,10 +37,6 @@ class Character
 
   ### Update Loop ###
 
-  def perform(action)
-    handle_action(action)
-  end
-
   # Actions occur once per turn/stage.
   def handle_action(action)
     case action

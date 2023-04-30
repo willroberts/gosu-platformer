@@ -90,7 +90,7 @@ class GameWindow < Gosu::Window
       return if level.complete? || card.nil?
 
       game_state.input_locked = true # Unlocked when stage ends.
-      character.perform(card)
+      character.handle_action(card)
       level.advance_stage! unless card.is_a?(ConcentrateCard)
     end
   end
