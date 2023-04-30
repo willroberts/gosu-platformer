@@ -38,8 +38,6 @@ class Player
 
   def set_sprite(filename) = @sprite = Sprite.character(filename)
 
-  ### Update Loop ###
-
   # Actions occur once per turn/stage.
   def handle_action(action)
     case action
@@ -211,7 +209,6 @@ class Player
     set_sprite('alienBlue_stand.png')
   end
 
-  ### Draw Loop ###
   def draw
     # Make the player sprite flash when damage was taken.
     return if @invulnerable && (Gosu.milliseconds / 100).even?
