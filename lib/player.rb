@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Character
+class Player
   attr_reader :x, :y, :sprite, :x_scale, :y_scale, :health, :dead
 
   def initialize(x, y)
@@ -93,9 +93,9 @@ class Character
     false
   end
 
-  # Detect character overlap with the given sprite bounds.
+  # Detect player overlap with the given sprite bounds.
   def overlaps(x1, y1, x2, y2)
-    # Determine character bounds.
+    # Determine player bounds.
     left_edge = @x - 56
     right_edge = @x + 56
     top_edge = @y - 24
@@ -213,7 +213,7 @@ class Character
 
   ### Draw Loop ###
   def draw
-    # Make the character sprite flash when damage was taken.
+    # Make the player sprite flash when damage was taken.
     return if @invulnerable && (Gosu.milliseconds / 100).even?
 
     # Gosu.draw_rect(x-56, y-24, 112, 152, Gosu::Color::BLUE) # Debug box for collision.

@@ -72,7 +72,7 @@ class Level1
         sleep 0.25
         window.input_locked = complete?
       end
-      @stage = next_stage unless window.character.dead # Prevent advancing stage when dead.
+      @stage = next_stage unless window.player.dead # Prevent advancing stage when dead.
     end
 
     window.advancing = true
@@ -90,7 +90,7 @@ class Level1
   end
 
   def update
-    # Move the character to the right by moving the level to the left.
+    # Move the player to the right by moving the level to the left.
     @level_pos_x -= @fg_speed
     @spike_positions.each.with_index do |coords, i|
       x, y = coords

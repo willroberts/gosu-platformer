@@ -11,7 +11,7 @@ end
 class GameWindow < Gosu::Window
   include Singleton
 
-  attr_reader :root_dir, :level, :advance_duration, :ui, :character, :tutorial_done
+  attr_reader :root_dir, :level, :advance_duration, :ui, :player, :tutorial_done
   attr_accessor :advancing, :input_locked
 
   def initialize
@@ -41,10 +41,10 @@ class GameWindow < Gosu::Window
   def self.level = instance.level
   def self.root_dir = instance.root_dir
 
-  def character
+  def player
     # Starting at x:252 means we can consistently advance to the exact center of each stage.
-    # The floor is at y:648, but we subtract 128px for the character sprite.
-    @character ||= Character.new(252, 520)
+    # The floor is at y:648, but we subtract 128px for the player sprite.
+    @player ||= Player.new(252, 520)
   end
 
   def update
@@ -55,15 +55,15 @@ class GameWindow < Gosu::Window
     @title_screen.update if @on_title_screen
 
     # Process game over states (both win and loss).
-    character.detect_death
-    @input_locked = true if character.dead
+    player.detect_death
+    @input_locked = true if player.dead
 
     # Process turns.
-    level.update if advancing && !@on_title_screen && !character.dead
+    level.update if advancing && !@on_title_screen && !player.dead
 
     # Update player interactions every frame.
-    character.detect_collision
-    character.update_locomotion
+    player.detect_collision
+    player.update_locomotion
   end
 
   def handle_input
@@ -94,7 +94,7 @@ class GameWindow < Gosu::Window
       return if level.complete? || card.nil?
 
       @input_locked = true # Unlocked when stage ends.
-      character.handle_action(card)
+      player.handle_action(card)
       level.advance_stage! unless card.is_a?(ConcentrateCard)
     end
   end
@@ -114,7 +114,7 @@ class GameWindow < Gosu::Window
       @title_screen.draw
     else
       level.draw
-      character.draw
+      player.draw
       ui.draw
     end
   end

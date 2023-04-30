@@ -20,7 +20,7 @@ class UI
   def draw
     # Display health bar.
     @health_frame.draw(10, 10, ZOrder::UI, 0.5, 0.5)
-    @health_bar.draw(20, 20, ZOrder::UI, window.character.health * 0.1, 0.5)
+    @health_bar.draw(20, 20, ZOrder::UI, window.player.health * 0.1, 0.5)
 
     # Tutorial window.
     unless window.tutorial_done
@@ -60,7 +60,7 @@ class UI
       window.input_locked = true # Hide choices.
     end
 
-    if window.character.health.zero? # Player dead.
+    if window.player.health.zero? # Player dead.
       draw_choice(x: 436, y: 266, x_scale: 0.5, y_scale: 0.25) # Backdrop.
       @big_font.draw_text('Game over!', 500, 290, ZOrder::UI, 1.0, 1.0, Gosu::Color::BLACK)
       # hud_text('Click to play again.', x: 565, y: 355) # TODO: Add this feature.
