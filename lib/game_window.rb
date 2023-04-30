@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'gosu'
+require 'pry'
 require 'singleton'
 
 module ZOrder
@@ -63,7 +64,6 @@ class GameWindow < Gosu::Window
 
   def handle_input
     close if Gosu.button_down?(Gosu::KB_ESCAPE)
-    require 'pry'
     binding.pry if Gosu.button_down?(Gosu::KB_P)
 
     if game_state.on_title_screen
