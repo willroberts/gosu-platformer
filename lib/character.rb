@@ -60,7 +60,7 @@ class Character
       if !@invulnerable
         if overlaps(x, y, x+96, y+96)
           # Take damage.
-          @health -= 1
+          @health -= 1 unless @health <= 0
           @damage_sound.play(volume=0.5)
 
           # Prevent taking damage for the time it takes to walk through the spikes.
@@ -104,10 +104,6 @@ class Character
     top_edge = @y - 24
     bottom_edge = @y + 128
 
-    # Since we only move left to right, collision happens when:
-    # 1. The right side of our bounding box exceeds the left side of the overlapped sprite.
-    # 2. The left side of our bounding box exceeds the right side of the overlapped sprite.
-    # 3. Any part of our bounding box is vertically aligned with any part of the overlapped sprite.
     if right_edge >= x1 && left_edge <= x2 && bottom_edge >= y1 && top_edge <= y2
       return true
     end
@@ -226,7 +222,7 @@ class Character
     if @invulnerable && ((Gosu.milliseconds / 100) % 2) == 0
       return
     end
-    #Gosu.draw_rect(x-56, y-24, 112, 152, Gosu::Color::BLUE) # Debug box for collision.
+    Gosu.draw_rect(x-56, y-24, 112, 152, Gosu::Color::BLUE) # Debug box for collision.
     @sprite.draw_rot(x, y, ZOrder::CHARACTER, 0, 0.5, 0.5, x_scale, y_scale)
   end
 end

@@ -102,7 +102,7 @@ class Level1
     @level_sprite.draw(@level_pos_x, 0, ZOrder::LEVEL, @level_scale, @level_scale)
     @spike_positions.each do |coords|
       x, y = coords
-      #Gosu.draw_rect(x, y, 96, 96, Gosu::Color::RED) # Debug box for collision.
+      Gosu.draw_rect(x, y, 96, 96, Gosu::Color::RED) # Debug box for collision.
       @spike_sprite.draw(x, y, ZOrder::LEVEL, 0.75, 0.75)
     end
     @potion_positions.each do |coords|
