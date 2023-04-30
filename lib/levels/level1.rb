@@ -30,13 +30,13 @@ class Level1
     # Potions!
     @potion_sprite = Gosu::Image.new('sprites/items/potionRed.png', tileable: false)
     @potion_positions = [
-      [1060, 570]
+      [1060, 570],
     ]
 
     # Floor spikes!
     @spike_sprite = Gosu::Image.new('sprites/environment/spikes.png', tileable: false)
     @spike_positions = [
-      [530, 554]
+      [530, 554],
     ]
   end
 
@@ -68,8 +68,16 @@ class Level1
   def update
     # Move the character to the right by moving the level to the left.
     @level_pos_x -= @fg_speed
-    @spike_positions.map! { |x, y| x - @fg_speed }
-    @potion_positions.map! { |x, y| x - @fg_speed }
+    @spike_positions.each.with_index { |coords, i|
+      x, y = coords
+      x -= @fg_speed
+      @spike_positions[i] = x, y
+    }
+    @potion_positions.each.with_index { |coords, i|
+      x, y = coords
+      x -= @fg_speed
+      @potion_positions[i] = x, y
+    }
     @bg_positions.map! { |x| x - @bg_speed }
   end
 
@@ -78,11 +86,13 @@ class Level1
       @bg.draw(x, 0, ZOrder::BACKGROUND, @bg_scale, @bg_scale)
     end
     @level_sprite.draw(@level_pos_x, 0, ZOrder::LEVEL, @level_scale, @level_scale)
-    #@spike_positions.each do |x, y|
-    #  @spike_sprite.draw(x, y, ZOrder::LEVEL, 0.75, 0.75)
-    #end
-    #@potion_positions.each do |x, y|
-    #  @potion_sprite.draw(x, y, ZOrder::LEVEL, 0.75, 0.75)
-    #end
+    @spike_positions.each do |coords|
+      x, y = coords
+      @spike_sprite.draw(x, y, ZOrder::LEVEL, 0.75, 0.75)
+    end
+    @potion_positions.each do |coords|
+      x, y = coords
+      @potion_sprite.draw(x, y, ZOrder::LEVEL, 0.75, 0.75)
+    end
   end
 end
