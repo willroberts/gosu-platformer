@@ -4,6 +4,7 @@ class UI
   attr_reader :choices
 
   def initialize
+    @window = GameWindow.instance
     @hud_font = Gosu::Font.new(20)
     @big_font = Gosu::Font.new(64)
     @health_frame = Gosu::Image.new('sprites/hud/health_frame.png', tileable: false)
@@ -16,7 +17,7 @@ class UI
   def draw(game_state)
     # Parse game state.
     input_locked = game_state.input_locked
-    player_health = GameWindow.instance.character.health
+    player_health = @window.character.health
     tutorial_done = game_state.tutorial_done
 
     # Display health bar.
