@@ -27,7 +27,7 @@ class GameWindow < Gosu::Window
     @level = Level1.new
     @ui = UI.new
 
-    @advance_distance = 422 # Pixels between each stage (72px * 6 blocks).
+    @advance_distance = 426 # Pixels between each stage (72px * 6 blocks + buffer).
     advance_speed = 4.0 # Pixels per frame.
     @advance_duration = (@advance_distance / advance_speed) / 60 # Kinematics v=d/t. Scaled by framerate.
 
