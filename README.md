@@ -1,9 +1,13 @@
-# Gosu Platformer
+# Spacebeing in a Spiky World
+
+![Title Screen](title.png)
 
 This is our team's entry for [Gosu Game Jam #4](https://itch.io/jam/gosu-game-jam-4).
 
 The game is a turn-based platformer. Play actions from your deck of cards, then
 see those actions play out in real time.
+
+![Game Screen](game.png)
 
 ## Concept and Features
 

@@ -23,7 +23,7 @@ class GameWindow < Gosu::Window
     @level = Level1.new
     @ui = UI.new
 
-    @input_locked = false
+    @input_locked = true
     @on_title_screen = true
     @tutorial_done = false
 
