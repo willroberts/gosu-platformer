@@ -99,9 +99,9 @@ class Character
   # FIXME: This seems to flip between true/false on some frames where we *are* overlapping.
   def overlaps(x1, y1, x2, y2)
     # Determine character bounds.
-    left_edge = @x - 64
-    right_edge = @x + 64
-    top_edge = @y - 64
+    left_edge = @x - 56
+    right_edge = @x + 56
+    top_edge = @y - 24
     bottom_edge = @y + 128
 
     # Since we only move left to right, collision happens when:
@@ -226,7 +226,7 @@ class Character
     if @invulnerable && ((Gosu.milliseconds / 100) % 2) == 0
       return
     end
-    #Gosu.draw_rect(x-64, y-64, 128, 256, Gosu::Color::BLUE) # Debug box for collision.
+    #Gosu.draw_rect(x-56, y-24, 112, 152, Gosu::Color::BLUE) # Debug box for collision.
     @sprite.draw_rot(x, y, ZOrder::CHARACTER, 0, 0.5, 0.5, x_scale, y_scale)
   end
 end
