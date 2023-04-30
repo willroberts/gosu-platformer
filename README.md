@@ -1,4 +1,4 @@
-# Gosu Platformer
+# Spacebeing in a Spiky World
 
 ![Title Screen](title.png)
 
