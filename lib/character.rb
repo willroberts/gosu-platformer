@@ -1,16 +1,10 @@
 # frozen_string_literal: true
 
 class Character
-  attr_reader :x, :y, :sprite, :x_scale, :y_scale
+  attr_reader :x, :y, :sprite, :x_scale, :y_scale, :health
 
   def initialize(x, y)
     @window = GameWindow.instance
-
-    set_sprite('alienBlue_stand.png')
-    @walk_anim = Gosu::Image.load_tiles('sprites/character/animations/walk.png', 128, 256)
-    @walk_duration = 1.7583 # TODO: Reduce duplication with the math in Level1.
-    @is_walking = false
-    @walk_sound = Gosu::Sample.new('sounds/walk.mp3')
 
     @x = x
     @y = y
@@ -19,6 +13,12 @@ class Character
     @floor_heights = [520, 304, 88] # 1F, 2F, 3F. Pixels.
     @current_elevation = 0 # 1F.
 
+    set_sprite('alienBlue_stand.png')
+    @walk_anim = Gosu::Image.load_tiles('sprites/character/animations/walk.png', 128, 256)
+    @walk_duration = 1.7583 # TODO: Reduce duplication with the math in Level1.
+    @is_walking = false
+    @walk_sound = Gosu::Sample.new('sounds/walk.mp3')
+
     @jump_impulse = 22.0 # Pixels per frame.
     @jump_gravity = 31.0 # Pixels per square second.
     @jump_start_time = nil
@@ -26,7 +26,10 @@ class Character
     @is_falling = false
     @jump_sound = Gosu::Sample.new('sounds/jump.mp3')
 
+    @concentrate_sound = Gosu::Sample.new('sounds/concentrate.mp3')
+
     # Health and damage.
+    @health = 5
     #@damage_sound = Gosu::Sample.new('sounds/damage.mp3') # TODO: Play when we take damage!
   end
 
@@ -43,7 +46,7 @@ class Character
     case action
     when WalkCard then walk
     when JumpCard then jump
-    when RestCard then rest
+    when RestCard then concentrate
     else raise "unknown action! (#{action})"
     end
   end
@@ -137,8 +140,8 @@ class Character
     end
   end
 
-  def rest
-    # TODO: Increase health by 1.
+  def concentrate
+    @concentrate_sound.play
     @window.skip_stage
   end
 

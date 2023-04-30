@@ -16,7 +16,7 @@ class UI
   def draw(game_state)
     # Parse game state.
     input_locked = game_state.input_locked
-    player_health = game_state.player_health
+    player_health = GameWindow.instance.character.health
     tutorial_done = game_state.tutorial_done
 
     # Display health bar.

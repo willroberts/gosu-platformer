@@ -2,10 +2,11 @@
 
 require 'forwardable'
 
+# TODO: Remove game state? Access things via GameWindow->CorrectClass->Attribute instead.
 class GameState
   extend Forwardable
   def_delegators :@state, :[], :[]=
-  attr_accessor :current_stage, :choices, :input_locked, :advancing, :player_health, :tutorial_done, :on_title_screen
+  attr_accessor :current_stage, :choices, :input_locked, :advancing, :tutorial_done, :on_title_screen
 
   def self.from_savefile(savefile_path)
     parsed = JSON.parse(savefile_path)
@@ -15,12 +16,10 @@ class GameState
   def initialize(state_hash: {})
     @state = state_hash
 
-    # TODO: I'm just adding stuff here WILLY NILLY but I'm probably using this class wrong.
     @current_stage = 0
     @choices = []
     @input_locked = true
     @advancing = false
-    @player_health = 5
     @on_title_screen = true
     @tutorial_done = false # Starts the game.
   end

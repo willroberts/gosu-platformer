@@ -31,13 +31,13 @@ class JumpCard < Card
   end
 end
 
-class RestCard < Card
+class ConcentrateCard < Card
   def initialize
     super
 
-    @action = :rest
-    @text = "Rest"
+    @action = :concentrate
+    @text = "Concentrate"
     @icon = nil
-    @desc = "Pass the turn, regaining 1 HP."
+    @desc = "Think hard and pass the turn."
   end
 end
