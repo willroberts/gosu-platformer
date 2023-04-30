@@ -86,6 +86,15 @@ class Character
     end
   end
 
+  def detect_death
+    if @health <= 0
+      @invulnerable = true
+      # TODO: Show game over screen.
+      return true
+    end
+    return false
+  end
+
   # Detect character overlap with the given sprite bounds.
   # FIXME: This seems to flip between true/false on some frames where we *are* overlapping.
   def overlaps(x1, y1, x2, y2)

@@ -46,6 +46,8 @@ class GameWindow < Gosu::Window
     handle_input
     @title_screen.update if game_state.on_title_screen
     level.update if game_state.advancing && !game_state.on_title_screen
+    dead = character.detect_death
+    game_state.input_locked = true if dead
     character.detect_collision
     character.update_locomotion
   end
