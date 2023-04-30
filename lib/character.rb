@@ -84,12 +84,23 @@ class Character
   end
 
   def overlaps(x1, y1, x2, y2)
-    # FIXME: This is big broken. Needs more brain energy.
-    # Are we within the X bounds?
-    # [   <  ]   >
-    # x1  x2 x1+123 x2+123
-    # Are we within the Y bounds?
-    true if @x >= x1 and @x + 64 <= x2 and @y >= y1 and @y + 128 <= y2
+    left_edge = @x
+    right_edge = @x + 64
+    top_edge = @y
+    bottom_edge = @y + 128
+
+    # Since we only move left to right, collision happens when:
+    # 1. The right side of our bounding box exceeds the left side of the overlapped sprite.
+    # 2. The left side of our bounding box exceeds the right side of the overlapped sprite.
+    # 3. Any part of our bounding box is vertically aligned with any part of the overlapped sprite.
+    if right_edge >= x1 and left_edge <= x2
+      puts 'Overlapping something horizontally!'
+      if false # try @y>=y1 and @y+128<=y2 ?
+        puts 'Overlapping something vertically! COLLISION!'
+        true
+      end
+    end
+
     false
   end
 
