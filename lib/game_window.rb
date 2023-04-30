@@ -74,12 +74,11 @@ class GameWindow < Gosu::Window
 
     if Gosu.button_down?(Gosu::MS_LEFT)
       card = ui.action_for_coordinates(self.mouse_x, self.mouse_y)
-      return unless card # Nothing clicked.
-      return if level.complete?
+      return if level.complete? || card.nil? || card.is_a?(RestCard)
 
       game_state.input_locked = true
       character.perform(card)
-      level.advance_stage! unless card == RestCard
+      level.advance_stage!
     end
   end
 
