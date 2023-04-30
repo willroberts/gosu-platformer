@@ -8,7 +8,8 @@ see those actions play out in real time.
 ## Concept and Features
 
 This game is a one-level concept with three cards to choose from. The ultimate
-goal would be to have a variety of levels, cards, and enemies.
+goal would be to have a variety of levels, cards, and enemies, with the ability
+to customize your deck of cards over time.
 
 There are other features which are partially implemented but not complete:
 - Quickly restarting the level by clicking
