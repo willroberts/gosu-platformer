@@ -54,9 +54,9 @@ class UI
 
     # Game Over text.
     if GameWindow.level.complete?
-      draw_choice(x: 426, y: 266, x_scale: 0.5, y_scale: 0.25) # Backdrop.
-      @big_font.draw_text("You win!", 510, 295, ZOrder::UI, 1.0, 1.0, Gosu::Color::BLACK)
-      hud_text('Click to play again.', x: 555, y: 355)
+      draw_choice(x: 436, y: 266, x_scale: 0.5, y_scale: 0.25) # Backdrop.
+      @big_font.draw_text("You win!", 520, 290, ZOrder::UI, 1.0, 1.0, Gosu::Color::BLACK)
+      hud_text('Click to play again.', x: 565, y: 355)
       game_state.input_locked = true # Hide choices.
     end
 
