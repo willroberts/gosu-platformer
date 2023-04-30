@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Player
-  attr_reader :x, :y, :sprite, :x_scale, :y_scale, :health, :dead
+  attr_reader :dead, :health
 
   def initialize(x, y)
     @x = x
@@ -217,6 +217,6 @@ class Player
     return if @invulnerable && (Gosu.milliseconds / 100).even?
 
     # Gosu.draw_rect(x-56, y-24, 112, 152, Gosu::Color::BLUE) # Debug box for collision.
-    @sprite.draw_rot(x, y, ZOrder::CHARACTER, 0, 0.5, 0.5, x_scale, y_scale)
+    @sprite.draw_rot(@x, @y, ZOrder::CHARACTER, 0, 0.5, 0.5, @x_scale, @y_scale)
   end
 end

@@ -11,7 +11,7 @@ end
 class GameWindow < Gosu::Window
   include Singleton
 
-  attr_reader :root_dir, :level, :advance_duration, :ui, :player, :tutorial_done
+  attr_reader :advance_duration, :level, :player, :root_dir, :tutorial_done, :ui
   attr_accessor :advancing, :input_locked
 
   def initialize

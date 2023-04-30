@@ -1,5 +1,5 @@
 class Card
-  attr_reader :action, :text, :icon, :desc
+  attr_reader :action, :desc, :icon, :text
 
   def initialize
     @action = nil
