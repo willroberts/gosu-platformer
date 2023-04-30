@@ -2,7 +2,7 @@
 
 require 'forwardable'
 
-# TODO: Remove game state? Access things via GameWindow->CorrectClass->Attribute instead.
+# TODO: Remove this class in favor of access via GameWindow.instance.foo.
 class GameState
   extend Forwardable
   def_delegators :@state, :[], :[]=

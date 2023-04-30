@@ -15,7 +15,6 @@ class Character
 
     set_sprite('alienBlue_stand.png')
     @walk_anim = Gosu::Image.load_tiles('sprites/character/animations/walk.png', 128, 256)
-    @walk_duration = 1.7583 # TODO: Reduce duplication with the math in Level1.
     @is_walking = false
     @walk_sound = Gosu::Sample.new('sounds/walk.mp3')
 
@@ -54,7 +53,7 @@ class Character
 
   # Collision is performed via jank. Check bounds of sprites for spikes and potions.
   def detect_collision
-    spikes = GameWindow.instance.level.spike_positions
+    spikes = @window.level.spike_positions
     spikes.each do |coords|
       x, y = coords
       if !@invulnerable
@@ -73,7 +72,7 @@ class Character
       end
     end
 
-    potions = GameWindow.instance.level.potion_positions
+    potions = @window.level.potion_positions
     potions.each.with_index do |coords, i|
       x, y = coords
       if overlaps(x, y, x+96, y+96)
@@ -81,7 +80,7 @@ class Character
         @health += 1 unless @health >= 5
 
         # Remove the potion from the level
-        GameWindow.instance.level.remove_potion(i)
+        @window.level.remove_potion(i)
       end
     end
   end
@@ -89,14 +88,12 @@ class Character
   def detect_death
     if @health <= 0
       @invulnerable = true
-      # TODO: Show game over screen.
       return true
     end
     return false
   end
 
   # Detect character overlap with the given sprite bounds.
-  # FIXME: This seems to flip between true/false on some frames where we *are* overlapping.
   def overlaps(x1, y1, x2, y2)
     # Determine character bounds.
     left_edge = @x - 56
@@ -147,7 +144,7 @@ class Character
     return if @is_walking || @is_falling || @is_jumping
 
     Thread.new do
-      sleep @walk_duration
+      sleep @window.advance_duration
       @is_walking = false
       reset_sprite
     end

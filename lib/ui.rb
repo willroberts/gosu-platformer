@@ -56,7 +56,7 @@ class UI
     if GameWindow.level.complete?
       draw_choice(x: 436, y: 266, x_scale: 0.5, y_scale: 0.25) # Backdrop.
       @big_font.draw_text("You win!", 530, 290, ZOrder::UI, 1.0, 1.0, Gosu::Color::BLACK)
-      #hud_text('Click to play again.', x: 565, y: 355) # TODO: Make this work.
+      #hud_text('Click to play again.', x: 565, y: 355) # TODO: Add this feature.
       hud_text('Press ESC to quit.', x: 565, y: 355)
       game_state.input_locked = true # Hide choices.
     end
@@ -64,7 +64,7 @@ class UI
     if player_health.zero? # Player dead.
       draw_choice(x: 436, y: 266, x_scale: 0.5, y_scale: 0.25) # Backdrop.
       @big_font.draw_text("Game over!", 500, 290, ZOrder::UI, 1.0, 1.0, Gosu::Color::BLACK)
-      #hud_text('Click to play again.', x: 565, y: 355) # TODO: Make this work.
+      #hud_text('Click to play again.', x: 565, y: 355) # TODO: Add this feature.
       hud_text('Press ESC to quit.', x: 565, y: 355)
       game_state.input_locked = true # Hide choices.
     end
