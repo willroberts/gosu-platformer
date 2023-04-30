@@ -67,8 +67,8 @@ class GameWindow < Gosu::Window
 
     if game_state.on_title_screen
       if Gosu.button_down?(Gosu::MS_LEFT)
-        # HACK: Using a thread to prevent a single click from spanning multiple frames.
         Thread.new do
+          # Prevent a single click from spanning multiple frames.
           sleep 0.250
           game_state.on_title_screen = false
         end
