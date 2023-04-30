@@ -57,8 +57,8 @@ class GameWindow < Gosu::Window
     if game_state.failure
       game_state.input_locked = true
     end
-    game_state.success = nil
     if game_state.success
+      # TODO: Handle game end state here.
     end
 
     # Update player interactions every frame.
@@ -102,7 +102,7 @@ class GameWindow < Gosu::Window
   # Triggered by player input.
   def skip_stage
     Thread.new do
-      sleep 1
+      sleep 0.75
       game_state.input_locked = false
     end
 
