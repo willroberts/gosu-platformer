@@ -78,11 +78,11 @@ class Level1
       @bg.draw(x, 0, ZOrder::BACKGROUND, @bg_scale, @bg_scale)
     end
     @level_sprite.draw(@level_pos_x, 0, ZOrder::LEVEL, @level_scale, @level_scale)
-    @spike_positions.each do |x, y|
-      @spike_sprite.draw(x, y, ZOrder::LEVEL, 0.75, 0.75)
-    end
-    @potion_positions.each do |x, y|
-      @potion_sprite.draw(x, y, ZOrder::LEVEL, 0.75, 0.75)
-    end
+    #@spike_positions.each do |x, y|
+    #  @spike_sprite.draw(x, y, ZOrder::LEVEL, 0.75, 0.75)
+    #end
+    #@potion_positions.each do |x, y|
+    #  @potion_sprite.draw(x, y, ZOrder::LEVEL, 0.75, 0.75)
+    #end
   end
 end
