@@ -33,7 +33,7 @@ class GameWindow < Gosu::Window
 
     # Music!
     @music = Gosu::Song.new('sounds/music.mp3')
-    @music.play(looping=true)
+    @music.play(looping = true)
   end
 
   def character
@@ -63,7 +63,8 @@ class GameWindow < Gosu::Window
 
   def handle_input
     close if Gosu.button_down?(Gosu::KB_ESCAPE)
-    require 'pry'; binding.pry if Gosu.button_down?(Gosu::KB_P)
+    require 'pry'
+    binding.pry if Gosu.button_down?(Gosu::KB_P)
 
     if game_state.on_title_screen
       if Gosu.button_down?(Gosu::MS_LEFT)
@@ -85,7 +86,7 @@ class GameWindow < Gosu::Window
     return if game_state.input_locked
 
     if Gosu.button_down?(Gosu::MS_LEFT)
-      card = ui.action_for_coordinates(self.mouse_x, self.mouse_y)
+      card = ui.action_for_coordinates(mouse_x, mouse_y)
       return if level.complete? || card.nil?
 
       game_state.input_locked = true # Unlocked when stage ends.

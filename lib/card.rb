@@ -14,9 +14,9 @@ class WalkCard < Card
     super
 
     @action = :walk
-    @text = "Walk"
+    @text = 'Walk'
     @icon = nil
-    @desc = "Move forward without jumping."
+    @desc = 'Move forward without jumping.'
   end
 end
 
@@ -25,9 +25,9 @@ class JumpCard < Card
     super
 
     @action = :jump
-    @text = "Jump"
+    @text = 'Jump'
     @icon = nil
-    @desc = "Jump and move forward."
+    @desc = 'Jump and move forward.'
   end
 end
 
@@ -36,8 +36,8 @@ class ConcentrateCard < Card
     super
 
     @action = :concentrate
-    @text = "Concentrate"
+    @text = 'Concentrate'
     @icon = nil
-    @desc = "Think hard and pass the turn."
+    @desc = 'Think hard and pass the turn.'
   end
 end

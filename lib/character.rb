@@ -56,26 +56,26 @@ class Character
     spikes = @window.level.spike_positions
     spikes.each do |coords|
       x, y = coords
-      if !@invulnerable
-        if overlaps(x, y+32, x+96, y+64)
-          # Take damage.
-          @health -= 1 unless @health <= 0
-          @damage_sound.play(volume=0.5)
+      next if @invulnerable
 
-          # Prevent taking damage for the time it takes to walk through the spikes.
-          @invulnerable = true
-          Thread.new do
-            sleep 0.85 # Just enough time to avoid taking damage twice from one spike.
-            @invulnerable = false
-          end
-        end
+      next unless overlaps(x, y + 32, x + 96, y + 64)
+
+      # Take damage.
+      @health -= 1 unless @health <= 0
+      @damage_sound.play(volume = 0.5)
+
+      # Prevent taking damage for the time it takes to walk through the spikes.
+      @invulnerable = true
+      Thread.new do
+        sleep 0.85 # Just enough time to avoid taking damage twice from one spike.
+        @invulnerable = false
       end
     end
 
     potions = @window.level.potion_positions
     potions.each.with_index do |coords, i|
       x, y = coords
-      if overlaps(x, y, x+96, y+96)
+      if overlaps(x, y, x + 96, y + 96)
         # Gain 1 HP.
         @health += 1 unless @health >= 5
 
@@ -90,7 +90,7 @@ class Character
       @invulnerable = true
       return true
     end
-    return false
+    false
   end
 
   # Detect character overlap with the given sprite bounds.
@@ -101,11 +101,9 @@ class Character
     top_edge = @y - 24
     bottom_edge = @y + 128
 
-    if right_edge >= x1 && left_edge <= x2 && bottom_edge >= y1 && top_edge <= y2
-      return true
-    end
+    return true if right_edge >= x1 && left_edge <= x2 && bottom_edge >= y1 && top_edge <= y2
 
-    return false
+    false
   end
 
   # Locomotion is processed every frame.
@@ -216,10 +214,9 @@ class Character
   ### Draw Loop ###
   def draw
     # Make the character sprite flash when damage was taken.
-    if @invulnerable && ((Gosu.milliseconds / 100) % 2) == 0
-      return
-    end
-    #Gosu.draw_rect(x-56, y-24, 112, 152, Gosu::Color::BLUE) # Debug box for collision.
+    return if @invulnerable && (Gosu.milliseconds / 100).even?
+
+    # Gosu.draw_rect(x-56, y-24, 112, 152, Gosu::Color::BLUE) # Debug box for collision.
     @sprite.draw_rot(x, y, ZOrder::CHARACTER, 0, 0.5, 0.5, x_scale, y_scale)
   end
 end

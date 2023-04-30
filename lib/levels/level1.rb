@@ -31,7 +31,7 @@ class Level1
     @potion_sprite = Gosu::Image.new('sprites/items/potionRed.png', tileable: false)
     @potion_positions = [
       [1060, 570],
-      [1920, 136],
+      [1920, 136]
     ]
 
     # Floor spikes!
@@ -53,7 +53,7 @@ class Level1
       # Stage 5.
       [2240, 338],
       [2480, 554],
-      [2470, 338],
+      [2470, 338]
       # Example solution: Jump, Walk, Walk, Walk, Jump (grab potion above), Walk.
     ]
   end
@@ -70,7 +70,7 @@ class Level1
         sleep 0.25
         state.input_locked = complete?
       end
-      @stage = next_stage if !state.game_over # Prevent advancing stage when dead.
+      @stage = next_stage unless state.game_over # Prevent advancing stage when dead.
     end
 
     state.advancing = true
@@ -90,16 +90,16 @@ class Level1
   def update
     # Move the character to the right by moving the level to the left.
     @level_pos_x -= @fg_speed
-    @spike_positions.each.with_index { |coords, i|
+    @spike_positions.each.with_index do |coords, i|
       x, y = coords
       x -= @fg_speed
       @spike_positions[i] = x, y
-    }
-    @potion_positions.each.with_index { |coords, i|
+    end
+    @potion_positions.each.with_index do |coords, i|
       x, y = coords
       x -= @fg_speed
       @potion_positions[i] = x, y
-    }
+    end
     @bg_positions.map! { |x| x - @bg_speed }
   end
 
@@ -114,7 +114,7 @@ class Level1
     @level_sprite.draw(@level_pos_x, 0, ZOrder::LEVEL, @level_scale, @level_scale)
     @spike_positions.each do |coords|
       x, y = coords
-      #Gosu.draw_rect(x, y+32, 96, 64, Gosu::Color::RED) # Debug box for collision.
+      # Gosu.draw_rect(x, y+32, 96, 64, Gosu::Color::RED) # Debug box for collision.
       @spike_sprite.draw(x, y, ZOrder::LEVEL, 0.75, 0.75)
     end
     @potion_positions.each do |coords|
