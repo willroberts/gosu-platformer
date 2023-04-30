@@ -43,11 +43,25 @@ class GameWindow < Gosu::Window
   end
 
   def update
+    # Process player input (keyboard and mouse).
     handle_input
+
+    # Handle title screen.
     @title_screen.update if game_state.on_title_screen
-    level.update if game_state.advancing && !game_state.on_title_screen
-    dead = character.detect_death
-    game_state.input_locked = true if dead
+
+    # Process turns.
+    level.update if game_state.advancing && !game_state.on_title_screen && !game_state.failure # Prevent zerg strat to die on last turn and still win?
+
+    # Process game over states (both win and loss).
+    game_state.failure = character.detect_death
+    if game_state.failure
+      game_state.input_locked = true
+    end
+    game_state.success = nil
+    if game_state.success
+    end
+
+    # Update player interactions every frame.
     character.detect_collision
     character.update_locomotion
   end
