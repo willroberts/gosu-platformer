@@ -78,7 +78,7 @@ class Character
       x, y = coords
       if overlaps(x, y, x+96, y+96)
         # Gain 1 HP.
-        @health += 1
+        @health += 1 unless @health >= 5
 
         # Remove the potion from the level
         GameWindow.instance.level.remove_potion(i)
@@ -136,8 +136,7 @@ class Character
           @is_falling = false
           @is_walking = true
           Thread.new do
-            # This value is needs to be longer if traversing from higher to
-            # lower elevation ~ 0.6s
+            # This value may need to be longer if traversing from higher->lower elevatioon (~0.6s)
             jitter = 0.4
             sleep(@window.advance_duration / 2 - jitter)
             @is_walking = false
@@ -227,6 +226,7 @@ class Character
     if @invulnerable && ((Gosu.milliseconds / 100) % 2) == 0
       return
     end
+    #Gosu.draw_rect(x-64, y-64, 128, 256, Gosu::Color::BLUE) # Debug box for collision.
     @sprite.draw_rot(x, y, ZOrder::CHARACTER, 0, 0.5, 0.5, x_scale, y_scale)
   end
 end
