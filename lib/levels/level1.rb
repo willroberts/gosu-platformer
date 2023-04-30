@@ -30,13 +30,13 @@ class Level1
     # Potions!
     @potion_sprite = Gosu::Image.new('sprites/items/potionRed.png', tileable: false)
     @potion_positions = [
-      [1060, 570],
+      [1060, 570]
     ]
 
     # Floor spikes!
     @spike_sprite = Gosu::Image.new('sprites/environment/spikes.png', tileable: false)
     @spike_positions = [
-      [530, 554],
+      [510, 554]
     ]
   end
 

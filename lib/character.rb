@@ -57,17 +57,18 @@ class Character
     spikes = GameWindow.instance.level.spike_positions
     spikes.each do |coords|
       x, y = coords
-      if !@invulnerable && overlaps(x, x+96, y, y+96)
-        puts 'Spike collision'
+      if !@invulnerable
+        if overlaps(x, y, x+96, y+96)
+          # Take damage.
+          @health -= 1
+          @damage_sound.play(volume=0.5)
 
-        @health -= 1
-        @damage_sound.play(volume=0.5)
-
-        # Prevent taking damage for the time it takes to walk through the spikes.
-        @invulnerable = true
-        Thread.new do
-          sleep 0.250
-          @invulnerable = false
+          # Prevent taking damage for the time it takes to walk through the spikes.
+          @invulnerable = true
+          Thread.new do
+            sleep 1
+            @invulnerable = false
+          end
         end
       end
     end
@@ -75,9 +76,7 @@ class Character
     potions = GameWindow.instance.level.potion_positions
     potions.each.with_index do |coords, i|
       x, y = coords
-      if overlaps(x, x+96, y, y+96)
-        puts 'Potion collision'
-
+      if overlaps(x, y, x+96, y+96)
         # Gain 1 HP.
         @health += 1
 
@@ -90,9 +89,10 @@ class Character
   # Detect character overlap with the given sprite bounds.
   # FIXME: This seems to flip between true/false on some frames where we *are* overlapping.
   def overlaps(x1, y1, x2, y2)
-    left_edge = @x
+    # Determine character bounds.
+    left_edge = @x - 64
     right_edge = @x + 64
-    top_edge = @y
+    top_edge = @y - 64
     bottom_edge = @y + 128
 
     # Since we only move left to right, collision happens when:
@@ -100,10 +100,10 @@ class Character
     # 2. The left side of our bounding box exceeds the right side of the overlapped sprite.
     # 3. Any part of our bounding box is vertically aligned with any part of the overlapped sprite.
     if right_edge >= x1 && left_edge <= x2 && bottom_edge >= y1 && top_edge <= y2
-      true
+      return true
     end
 
-    false
+    return false
   end
 
   # Locomotion is processed every frame.
@@ -214,7 +214,8 @@ class Character
 
   ### Draw Loop ###
   def draw
-    # TODO: Implement damage FX by using (Gosu.milliseconds % 100) to selectively draw the character, creating a "flashing" effect.
+    # TODO: Implement damage FX by using (Gosu.milliseconds % 100) to selectively
+    # draw the character, creating a "flashing" effect while invulnerable.
     @sprite.draw_rot(x, y, ZOrder::CHARACTER, 0, 0.5, 0.5, x_scale, y_scale)
   end
 end
