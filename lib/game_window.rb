@@ -74,7 +74,7 @@ class GameWindow < Gosu::Window
 
     if Gosu.button_down?(Gosu::MS_LEFT)
       card = ui.action_for_coordinates(self.mouse_x, self.mouse_y)
-      return if level.complete? || card.nil? || card.is_a?(RestCard)
+      return if level.complete? || card.nil? || card.is_a?(ConcentrateCard)
 
       game_state.input_locked = true
       character.perform(card)
