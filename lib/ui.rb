@@ -9,14 +9,14 @@ class UI
     @health_frame = Gosu::Image.new('sprites/hud/health_frame.png', tileable: false)
     @health_bar = Gosu::Image.new('sprites/hud/health_bar.png', tileable: false)
     @choice_sprite = Gosu::Image.new('sprites/hud/window.png', tileable: false)
-    @choices = [WalkCard.new, JumpCard.new, RestCard.new]
+    @choices = [WalkCard.new, JumpCard.new, ConcentrateCard.new]
     @enable_debug_grid = false
   end
 
   def draw(game_state)
     # Parse game state.
     input_locked = game_state.input_locked
-    player_health = game_state.player_health
+    player_health = GameWindow.instance.character.health
     tutorial_done = game_state.tutorial_done
 
     # Display health bar.
@@ -46,16 +46,27 @@ class UI
         hud_text(choices[1].text, x: 576 + 44, y: 40 + 54)
 
         draw_choice(x: 752, **sprite_constants)
-        hud_text(choices[2].text, x: 752 + 44, y: 40 + 54)
+        hud_text(choices[2].text, x: 722 + 44, y: 40 + 54)
       else
         raise 'Invalid number of choices!'
       end
     end
 
-    # Game over text.
+    # Game Over text.
     if GameWindow.level.complete?
-      draw_choice(x: 416, y: 266, x_scale: 0.5, y_scale: 0.25)
-      @big_font.draw_text("You win!", 500, 300, ZOrder::UI, 1.0, 1.0, Gosu::Color::BLACK)
+      draw_choice(x: 436, y: 266, x_scale: 0.5, y_scale: 0.25) # Backdrop.
+      @big_font.draw_text('You win!', 530, 290, ZOrder::UI, 1.0, 1.0, Gosu::Color::BLACK)
+      # hud_text('Click to play again.', x: 565, y: 355) # TODO: Add this feature.
+      hud_text('Press ESC to quit.', x: 565, y: 355)
+      game_state.input_locked = true # Hide choices.
+    end
+
+    if player_health.zero? # Player dead.
+      draw_choice(x: 436, y: 266, x_scale: 0.5, y_scale: 0.25) # Backdrop.
+      @big_font.draw_text('Game over!', 500, 290, ZOrder::UI, 1.0, 1.0, Gosu::Color::BLACK)
+      # hud_text('Click to play again.', x: 565, y: 355) # TODO: Add this feature.
+      hud_text('Press ESC to quit.', x: 565, y: 355)
+      game_state.input_locked = true # Hide choices.
     end
 
     # Level debug grid.

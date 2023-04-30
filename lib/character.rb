@@ -1,16 +1,10 @@
 # frozen_string_literal: true
 
 class Character
-  attr_reader :x, :y, :sprite, :x_scale, :y_scale
+  attr_reader :x, :y, :sprite, :x_scale, :y_scale, :health
 
   def initialize(x, y)
     @window = GameWindow.instance
-
-    set_sprite('alienBlue_stand.png')
-    @walk_anim = Gosu::Image.load_tiles('sprites/character/animations/walk.png', 128, 256)
-    @walk_duration = 1.7583 # TODO: Reduce duplication with the math in Level1.
-    @is_walking = false
-    @walk_sound = Gosu::Sample.new('sounds/walk.mp3')
 
     @x = x
     @y = y
@@ -19,6 +13,11 @@ class Character
     @floor_heights = [520, 304, 88] # 1F, 2F, 3F. Pixels.
     @current_elevation = 0 # 1F.
 
+    set_sprite('alienBlue_stand.png')
+    @walk_anim = Gosu::Image.load_tiles('sprites/character/animations/walk.png', 128, 256)
+    @is_walking = false
+    @walk_sound = Gosu::Sample.new('sounds/walk.mp3')
+
     @jump_impulse = 22.0 # Pixels per frame.
     @jump_gravity = 31.0 # Pixels per square second.
     @jump_start_time = nil
@@ -26,8 +25,12 @@ class Character
     @is_falling = false
     @jump_sound = Gosu::Sample.new('sounds/jump.mp3')
 
+    @concentrate_sound = Gosu::Sample.new('sounds/concentrate.mp3')
+
     # Health and damage.
-    #@damage_sound = Gosu::Sample.new('sounds/damage.mp3') # TODO: Play when we take damage!
+    @health = 5
+    @invulnerable = false
+    @damage_sound = Gosu::Sample.new('sounds/damage.mp3')
   end
 
   def set_sprite(filename) = @sprite = Sprite.character(filename)
@@ -43,9 +46,64 @@ class Character
     case action
     when WalkCard then walk
     when JumpCard then jump
-    when RestCard then rest
+    when ConcentrateCard then concentrate
     else raise "unknown action! (#{action})"
     end
+  end
+
+  # Collision is performed via jank. Check bounds of sprites for spikes and potions.
+  def detect_collision
+    spikes = @window.level.spike_positions
+    spikes.each do |coords|
+      x, y = coords
+      next if @invulnerable
+
+      next unless overlaps(x, y + 32, x + 96, y + 64)
+
+      # Take damage.
+      @health -= 1 unless @health <= 0
+      @damage_sound.play(volume = 0.5)
+
+      # Prevent taking damage for the time it takes to walk through the spikes.
+      @invulnerable = true
+      Thread.new do
+        sleep 0.85 # Just enough time to avoid taking damage twice from one spike.
+        @invulnerable = false
+      end
+    end
+
+    potions = @window.level.potion_positions
+    potions.each.with_index do |coords, i|
+      x, y = coords
+      if overlaps(x, y, x + 96, y + 96)
+        # Gain 1 HP.
+        @health += 1 unless @health >= 5
+
+        # Remove the potion from the level
+        @window.level.remove_potion(i)
+      end
+    end
+  end
+
+  def detect_death
+    if @health <= 0
+      @invulnerable = true
+      return true
+    end
+    false
+  end
+
+  # Detect character overlap with the given sprite bounds.
+  def overlaps(x1, y1, x2, y2)
+    # Determine character bounds.
+    left_edge = @x - 56
+    right_edge = @x + 56
+    top_edge = @y - 24
+    bottom_edge = @y + 128
+
+    return true if right_edge >= x1 && left_edge <= x2 && bottom_edge >= y1 && top_edge <= y2
+
+    false
   end
 
   # Locomotion is processed every frame.
@@ -69,8 +127,7 @@ class Character
           @is_falling = false
           @is_walking = true
           Thread.new do
-            # This value is needs to be longer if traversing from higher to
-            # lower elevation ~ 0.6s
+            # This value may need to be longer if traversing from higher->lower elevatioon (~0.6s)
             jitter = 0.4
             sleep(@window.advance_duration / 2 - jitter)
             @is_walking = false
@@ -85,7 +142,7 @@ class Character
     return if @is_walking || @is_falling || @is_jumping
 
     Thread.new do
-      sleep @walk_duration
+      sleep @window.advance_duration
       @is_walking = false
       reset_sprite
     end
@@ -137,8 +194,8 @@ class Character
     end
   end
 
-  def rest
-    # TODO: Increase health by 1.
+  def concentrate
+    @concentrate_sound.play
     @window.skip_stage
   end
 
@@ -156,7 +213,10 @@ class Character
 
   ### Draw Loop ###
   def draw
-    # TODO: Implement damage FX by using (Gosu.milliseconds % 100) to selectively draw the character, creating a "flashing" effect.
+    # Make the character sprite flash when damage was taken.
+    return if @invulnerable && (Gosu.milliseconds / 100).even?
+
+    # Gosu.draw_rect(x-56, y-24, 112, 152, Gosu::Color::BLUE) # Debug box for collision.
     @sprite.draw_rot(x, y, ZOrder::CHARACTER, 0, 0.5, 0.5, x_scale, y_scale)
   end
 end

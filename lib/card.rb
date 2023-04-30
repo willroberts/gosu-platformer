@@ -14,9 +14,9 @@ class WalkCard < Card
     super
 
     @action = :walk
-    @text = "Walk"
+    @text = 'Walk'
     @icon = nil
-    @desc = "Move forward without jumping."
+    @desc = 'Move forward without jumping.'
   end
 end
 
@@ -25,19 +25,19 @@ class JumpCard < Card
     super
 
     @action = :jump
-    @text = "Jump"
+    @text = 'Jump'
     @icon = nil
-    @desc = "Jump and move forward."
+    @desc = 'Jump and move forward.'
   end
 end
 
-class RestCard < Card
+class ConcentrateCard < Card
   def initialize
     super
 
-    @action = :rest
-    @text = "Rest"
+    @action = :concentrate
+    @text = 'Concentrate'
     @icon = nil
-    @desc = "Pass the turn, regaining 1 HP."
+    @desc = 'Think hard and pass the turn.'
   end
 end
