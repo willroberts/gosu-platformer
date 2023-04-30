@@ -56,6 +56,8 @@ class Level1
       [2470, 338]
       # Example solution: Jump, Walk, Walk, Walk, Jump (grab potion above), Walk.
     ]
+
+    @enable_collision_debug = false
   end
 
   def window
@@ -116,7 +118,7 @@ class Level1
     @level_sprite.draw(@level_pos_x, 0, ZOrder::LEVEL, @level_scale, @level_scale)
     @spike_positions.each do |coords|
       x, y = coords
-      # Gosu.draw_rect(x, y+32, 96, 64, Gosu::Color::RED) # Debug box for collision.
+      Gosu.draw_rect(x, y+32, 96, 64, Gosu::Color::RED) if @enable_collision_debug
       @spike_sprite.draw(x, y, ZOrder::LEVEL, 0.75, 0.75)
     end
     @potion_positions.each do |coords|
